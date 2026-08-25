@@ -54,6 +54,8 @@
   .card:hover{border-color:#D6D6CE;box-shadow:0 14px 34px rgba(17,17,17,.07);transform:translateY(-3px)}
   .card h3{margin:0;font-size:20px;font-weight:800;letter-spacing:-.02em}
   .card p{font-size:15px;line-height:1.75;color:var(--ink-soft)}
+  .ok-msg{font-size:14px;line-height:1.7;color:var(--ink-soft);margin:10px 0 0}
+  .ok-msg a{font-weight:700;border-bottom:1px solid var(--accent)}
   .ico{width:52px;height:52px;border-radius:14px;border:1px solid var(--line);background:#FAFAF7;display:flex;align-items:center;justify-content:center;color:var(--ink);margin-bottom:4px;transition:background .25s,border-color .25s,color .25s}
   .ico svg{width:24px;height:24px;stroke:currentColor;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
   .card:hover .ico{background:var(--ink);border-color:var(--ink);color:var(--accent)}
@@ -408,7 +410,7 @@
   <div class="cta">
     <div class="cta-copy">
       <h2>Conte como é a sua operação</h2>
-      <p>Preencha ao lado e a conversa abre direto no WhatsApp, já com o resumo do seu negócio. Respondemos em até um dia útil com um diagnóstico inicial.</p>
+      <p>Preencha ao lado que a gente entra em contato. Respondemos em até um dia útil com um diagnóstico inicial da sua operação.</p>
       <p style="margin-top:22px">Prefere escrever você mesmo?<br>
         <a data-link="wa" href="#" style="color:#fff;font-weight:700;border-bottom:1px solid var(--accent)">Chamar no WhatsApp</a>
         &nbsp;·&nbsp;
@@ -451,7 +453,7 @@
         <label for="f-msg">O que você precisa?</label>
         <textarea id="f-msg" name="mensagem" placeholder="Ex.: hoje só vendo pelo iFood e quero ter app próprio."></textarea>
       </div>
-      <button type="submit">Abrir conversa no WhatsApp</button>
+      <button type="submit">Quero que entrem em contato</button>
       <div class="legal">Sem compromisso. Não usamos seus dados para nada além do contato.</div>
     </form>
   </div>
@@ -475,7 +477,8 @@
    (botões, rodapé e formulário) passa a apontar para o lugar certo.
    ===================================================================== */
 const KADOSH = {
-  whatsapp : "5564993404936"                // DDI 55 + DDD 64 + número
+  whatsapp : "5564993404936",               // DDI 55 + DDD 64 + número
+  formKey  : ""                             // chave do Web3Forms (web3forms.com). Vazio = cai no WhatsApp
 };
 /* ===================================================================== */
 
@@ -605,7 +608,7 @@ zap.addEventListener('input', () => {
 const p = new URLSearchParams(location.search);
 const origem = p.get('utm_source') || p.get('origem') || document.referrer || 'acesso direto';
 
-document.getElementById('form-lead').addEventListener('submit', e => {
+document.getElementById('form-lead').addEventListener('submit', async e => {
   e.preventDefault();
   const f = e.target;
   const val = n => f.elements[n].value.trim();
@@ -618,16 +621,50 @@ document.getElementById('form-lead').addEventListener('submit', e => {
   });
   if (!ok) { f.querySelector('.err').focus(); return; }
 
-  const msg = 'Olá, Kadosh! Vim pelo site.\n\n'
-    + `Nome: ${val('nome')}\n`
+  const resumo = `Nome: ${val('nome')}\n`
     + `WhatsApp: ${val('zap')}\n`
     + `Segmento: ${val('segmento')}\n`
     + `Lojas: ${val('lojas')}\n`
     + (val('mensagem') ? `Preciso de: ${val('mensagem')}\n` : '')
     + `\n(origem: ${origem})`;
 
-  const url = waLink(msg);
-  if (!window.open(url, '_blank', 'noopener')) location.href = url;
+  /* sem chave configurada, mantem o caminho antigo: o cliente chama no WhatsApp */
+  const paraWhats = () => {
+    const url = waLink('Olá, Kadosh! Vim pelo site.\n\n' + resumo);
+    if (!window.open(url, '_blank', 'noopener')) location.href = url;
+  };
+  if (!KADOSH.formKey) return paraWhats();
+
+  const btn = f.querySelector('button[type=submit]');
+  const rotulo = btn.textContent;
+  btn.disabled = true; btn.textContent = 'Enviando…';
+
+  try {
+    const r = await fetch('https://api.web3forms.com/submit', {
+      method : 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body   : JSON.stringify({
+        access_key : KADOSH.formKey,
+        subject    : `Novo contato pelo site — ${val('nome')} (${val('segmento')})`,
+        from_name  : 'Site Kadosh',
+        nome       : val('nome'),
+        whatsapp   : val('zap'),
+        segmento   : val('segmento'),
+        lojas      : val('lojas'),
+        mensagem   : val('mensagem') || '—',
+        origem     : origem
+      })
+    });
+    if (!(await r.json()).success) throw new Error('recusado');
+
+    const primeiro = val('nome').split(' ')[0].replace(/[<>&]/g, '');
+    f.innerHTML = '<h3>Recebemos o seu contato</h3>'
+      + '<p class="ok-msg">Obrigado, ' + primeiro + '. A gente chama você no WhatsApp em até um dia útil.</p>'
+      + '<p class="ok-msg">Se preferir adiantar, <a href="' + waLink('Olá, Kadosh! Acabei de preencher o formulário no site.') + '" target="_blank" rel="noopener">fale com a gente agora</a>.</p>';
+  } catch (err) {
+    btn.disabled = false; btn.textContent = rotulo;
+    paraWhats();
+  }
 });
 </script>
 
