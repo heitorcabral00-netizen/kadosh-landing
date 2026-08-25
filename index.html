@@ -139,6 +139,7 @@
   .sec-head{display:flex;flex-direction:column;gap:12px;margin-bottom:34px;max-width:640px}
 
   /* delivery */
+  .delivery>*{min-width:0}
   .delivery{background:var(--sand);border-radius:24px;padding:56px 48px;display:grid;grid-template-columns:0.85fr 1.15fr;gap:48px;align-items:center}
   .delivery h2{font-size:40px;line-height:1.1}
   .delivery p{font-size:15px;line-height:1.75;color:var(--ink-soft)}
@@ -148,7 +149,7 @@
   .screens{display:flex;align-items:center;justify-content:center;gap:22px}
   /* aparelho físico: moldura de titânio, ilha dinâmica e botões laterais.
      Proporção interna do iPhone 15 Pro (393x852). */
-  .device{position:relative;width:248px;padding:11px;border-radius:46px;flex:none;
+  .device{position:relative;width:248px;padding:11px;border-radius:46px;flex:0 1 auto;min-width:0;
     background:linear-gradient(150deg,#46464C 0%,#1A1A1E 34%,#37373D 62%,#121215 100%);
     box-shadow:0 34px 64px -22px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.09)}
   .device .screen{position:relative;border-radius:36px;overflow:hidden;background:#fff;aspect-ratio:393/852}
@@ -213,7 +214,7 @@
   @media (max-width:960px){
     header{flex-wrap:wrap;gap:14px;padding:16px 24px}
     section[id]{scroll-margin-top:160px}
-    nav{order:3;width:100%;justify-content:space-between;gap:14px;font-size:13px}
+    nav{order:3;width:100%;flex-wrap:wrap;justify-content:flex-start;gap:10px 18px;font-size:13px}
     .wrap{padding-inline:24px}
     .hero{padding:72px 24px 80px}
     .hero h1{font-size:42px}
@@ -226,7 +227,16 @@
       .grid-4,.grid-3,.steps,.delivery,.feats,.lead-row{grid-template-columns:1fr}
     .lead{padding:22px}
     .delivery{padding:36px 24px;gap:36px}
+    .screens{gap:14px}
+    .screens{flex-wrap:nowrap}
+    .device{width:clamp(104px,38vw,248px);padding:8px;border-radius:34px}
+    .device .screen{border-radius:26px}
+    .device .island{width:58px;height:17px;top:6px;border-radius:9px}
+    .device .btn-l{top:78px;height:21px;box-shadow:0 31px 0 0 #3d3d44,0 57px 0 0 #3d3d44}
+    .device .btn-r{top:96px;height:38px}
+    .feats{grid-template-columns:1fr;gap:12px}
         .cta{padding:40px 28px}
+    .cta-copy{min-width:0}
     .cta h2{font-size:28px}
     section h2{font-size:30px}
     footer{padding:32px 24px}
@@ -272,7 +282,6 @@
     <a href="#faq">Dúvidas</a>
   </nav>
   <div class="head-cta">
-    <a href="#entrar">Entrar</a>
     <a class="btn" href="#contato">Falar com a equipe</a>
   </div>
 </header>
