@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kadosh — Delivery próprio, sites e sistemas sob medida</title>
+<meta name="description" content="Cardápio digital sem comissão, sites sob medida e sistemas construídos em cima do jeito que o seu negócio já funciona. Publicado, hospedado e cuidado depois que entra no ar.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+<!-- Como o link aparece quando é compartilhado (WhatsApp, Instagram, Google).
+     TROCAR o domínio abaixo pelo real assim que o site for publicado —
+     WhatsApp exige endereço absoluto, com https, senão não mostra a imagem. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kadosh">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Cardápio digital sem comissão — a venda é sua, inteira">
+<meta property="og:description" content="Cardápio próprio, pedido impresso na cozinha e painel para acompanhar a operação. A partir de R$ 179/mês, sem comissão por pedido.">
+<meta property="og:url" content="https://SEU-DOMINIO.com.br/">
+<meta property="og:image" content="https://SEU-DOMINIO.com.br/assets/og-kadosh.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Painel da Kadosh mostrando faturamento e pedidos do dia">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0B0B0C">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent:#C9A227;
+    --ink:#111;
+    --ink-soft:#55554F;
+    --black:#0B0B0C;
+    --line:#E7E7E1;
+    --line-dark:#26262A;
+    --muted-dark:#A8A8A1;
+    --sand:#F5F5F1;
+    --hatch:repeating-linear-gradient(135deg,#F2F2EE 0 10px,#ECECE6 10px 20px);
+    --hatch-dark:repeating-linear-gradient(135deg,#17171A 0 10px,#131317 10px 20px);
+    --wrap:1200px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#fff;color:var(--ink);font-family:Manrope,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:var(--ink);text-decoration:none}
+  a:hover{color:var(--accent)}
+  h1,h2{margin:0;letter-spacing:-.04em;text-wrap:pretty}
+  p{margin:0;text-wrap:pretty}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding-inline:48px}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;color:var(--accent)}
+  .btn{display:inline-block;font-size:15px;font-weight:700;padding:16px 30px;border-radius:12px;background:#fff;color:var(--black)}
+  .btn-dark{background:var(--ink);color:#fff}
+  .btn-ghost{border:1px solid var(--line-dark);color:#fff;background:transparent;font-weight:600}
+  .btn-ghost:hover{color:#fff;border-color:#4A4A52}
+  .card{border:1px solid var(--line);border-radius:18px;padding:30px;display:flex;flex-direction:column;gap:12px}
+  .card h3{margin:0;font-size:18px;font-weight:800;letter-spacing:-.02em}
+  .card p{font-size:14px;line-height:1.7;color:var(--ink-soft)}
+  .dot{width:34px;height:34px;border-radius:10px;background:var(--ink)}
+  .ph{background:var(--hatch);display:flex;align-items:flex-end;padding:14px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#9C9C93}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+
+  /* header */
+  header{position:sticky;top:0;z-index:10;background:var(--black);display:flex;align-items:center;justify-content:space-between;padding:20px 48px}
+  .logo{display:flex;align-items:center;gap:10px}
+  .logo .mark{width:28px;height:28px;border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;color:var(--black)}
+  .logo .word{font-size:20px;font-weight:800;letter-spacing:-.035em;color:#fff}
+  /* acento quadrado da marca, no lugar do ponto redondo */
+  .logo .word .quad{display:inline-block;width:.2em;height:.2em;background:var(--accent);margin-left:.06em;vertical-align:baseline}
+  nav{display:flex;gap:28px;font-size:14px}
+  nav a{color:#C9C9C2}
+  .head-cta{display:flex;gap:10px;align-items:center}
+  .head-cta a:first-child{font-size:14px;color:#C9C9C2}
+  .head-cta .btn{font-size:14px;font-weight:600;padding:10px 18px;border-radius:10px}
+
+  /* hero */
+  .hero{background:var(--black);color:#fff;padding:104px 48px 120px;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center}
+  .hero h1{font-size:70px;font-weight:800;line-height:1.03;max-width:940px}
+  .hero p{max-width:600px;font-size:17px;line-height:1.65;color:var(--muted-dark)}
+  .hero .actions{display:flex;gap:12px;padding-top:10px;flex-wrap:wrap;justify-content:center}
+  /* palco do mockup — as camadas seguem o mouse (parallax) */
+  .hero-stage{position:relative;width:100%;max-width:1020px;height:550px;margin-top:56px}
+  .layer{position:absolute;transition:transform .4s cubic-bezier(.22,.61,.36,1);will-change:transform}
+
+  /* janela do navegador */
+  .mock-browser{left:0;top:16px;width:74%;border-radius:16px;overflow:hidden;background:#141418;border:1px solid #26262A;box-shadow:0 44px 90px -24px rgba(0,0,0,.85);text-align:left}
+  .mb-bar{height:38px;background:#1B1B20;border-bottom:1px solid #26262A;display:flex;align-items:center;gap:7px;padding:0 14px}
+  .mb-dot{width:10px;height:10px;border-radius:50%;flex:none}
+  .mb-url{margin:0 auto;font-family:'JetBrains Mono',monospace;font-size:11px;color:#8B8B84;background:#0F0F12;padding:5px 18px;border-radius:6px}
+  .mb-body{height:398px;overflow:hidden}
+  .mb-body img{width:100%;height:100%;object-fit:cover;object-position:left top;display:block}
+  .mb-side{border-right:1px solid #26262A;padding:14px 10px;display:flex;flex-direction:column;gap:3px}
+  .mb-brand{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:800;color:#fff;padding:0 8px 14px;letter-spacing:-.03em}
+  .mb-mark{width:20px;height:20px;border-radius:7px;background:#fff;color:#0B0B0C;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+  .mb-nav{font-size:12px;color:#7C7C76;padding:7px 9px;border-radius:8px}
+  .mb-nav.on{background:rgba(201,162,39,.14);color:var(--accent);font-weight:700}
+  .mb-main{padding:16px 18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+  .mb-h{display:flex;align-items:center;justify-content:space-between}
+  .mb-h b{font-size:14px;color:#fff;font-weight:800;letter-spacing:-.02em}
+  .mb-live{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#7C7C76}
+  .mb-live i{width:6px;height:6px;border-radius:50%;background:#28C840;box-shadow:0 0 0 0 rgba(40,200,64,.55);animation:pulso 2s infinite}
+  @keyframes pulso{70%{box-shadow:0 0 0 7px rgba(40,200,64,0)}100%{box-shadow:0 0 0 0 rgba(40,200,64,0)}}
+  .mb-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .mb-kpi{background:#1A1A1F;border:1px solid #26262A;border-radius:10px;padding:9px 10px;display:flex;flex-direction:column;gap:2px;min-width:0}
+  .mb-kpi span{font-size:9px;color:#7C7C76;letter-spacing:.04em;text-transform:uppercase}
+  .mb-kpi b{font-size:14px;color:#fff;font-weight:800;letter-spacing:-.03em;white-space:nowrap}
+  .mb-kpi em{font-style:normal;font-size:9px;color:#28C840;font-weight:700}
+  .mb-chart{height:104px;background:#1A1A1F;border:1px solid #26262A;border-radius:10px;overflow:hidden}
+  .mb-rows{display:flex;flex-direction:column;gap:6px}
+  .mb-row{display:flex;align-items:center;gap:10px;font-size:11px;color:#A8A8A1;background:#1A1A1F;border:1px solid #26262A;border-radius:9px;padding:8px 10px}
+  .mb-row b{margin-left:auto;color:#fff;font-weight:700;white-space:nowrap}
+  .mb-row span.txt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .tag{font-family:'JetBrains Mono',monospace;font-size:9px;padding:3px 7px;border-radius:5px;flex:none}
+  .tag.ok{background:rgba(40,200,64,.14);color:#5FD97A}
+  .tag.go{background:rgba(201,162,39,.16);color:var(--accent)}
+
+  /* celular com as notificações de pedido */
+  .mock-phone{right:0;top:24px;width:276px;height:599px;border-radius:38px;background:linear-gradient(150deg,#46464C 0%,#1A1A1E 34%,#37373D 62%,#121215 100%);box-shadow:0 44px 90px -20px rgba(0,0,0,.9), inset 0 0 0 1px rgba(255,255,255,.08);padding:9px;overflow:hidden}
+  .mock-phone img{width:100%;height:100%;object-fit:cover;object-position:top center;border-radius:30px;display:block}
+  .mock-phone .island{position:absolute;top:18px;left:50%;transform:translateX(-50%);width:74px;height:21px;border-radius:11px;background:#000;z-index:3}
+
+  /* etiquetas flutuantes */
+  .badge-float{border-radius:14px;padding:14px 18px;box-shadow:0 24px 50px -14px rgba(0,0,0,.75);text-align:left}
+  .b-taxa{right:32px;top:0;background:var(--accent);color:#231C05}
+  .b-saldo{left:26px;bottom:6px;background:#fff;color:var(--ink)}
+  .badge-float .rot{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;opacity:.72}
+  .badge-float .num{font-size:24px;font-weight:800;letter-spacing:-.04em;margin-top:3px}
+  .badge-float .sub{font-size:11px;font-weight:600;opacity:.75;margin-top:2px}
+
+  /* logos */
+
+  /* sections */
+  section h2{font-size:40px;font-weight:800}
+  .sec-head{display:flex;flex-direction:column;gap:12px;margin-bottom:34px;max-width:640px}
+
+  /* delivery */
+  .delivery{background:var(--sand);border-radius:24px;padding:56px 48px;display:grid;grid-template-columns:0.85fr 1.15fr;gap:48px;align-items:center}
+  .delivery h2{font-size:40px;line-height:1.1}
+  .delivery p{font-size:15px;line-height:1.75;color:var(--ink-soft)}
+  .feats{display:grid;grid-template-columns:1fr 1fr;gap:14px 26px;padding-top:4px}
+  .feat{display:flex;gap:10px;align-items:flex-start;font-size:14px;font-weight:600}
+  .feat i{width:6px;height:6px;border-radius:50%;background:var(--accent);margin-top:7px;flex:none}
+  .screens{display:flex;align-items:center;justify-content:center;gap:22px}
+  /* aparelho físico: moldura de titânio, ilha dinâmica e botões laterais.
+     Proporção interna do iPhone 15 Pro (393x852). */
+  .device{position:relative;width:248px;padding:11px;border-radius:46px;flex:none;
+    background:linear-gradient(150deg,#46464C 0%,#1A1A1E 34%,#37373D 62%,#121215 100%);
+    box-shadow:0 34px 64px -22px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.09)}
+  .device .screen{position:relative;border-radius:36px;overflow:hidden;background:#fff;aspect-ratio:393/852}
+  .device .screen img{width:100%;height:auto;display:block}
+  .device .island{position:absolute;top:9px;left:50%;transform:translateX(-50%);
+    width:82px;height:24px;border-radius:13px;background:#000;z-index:3}
+  .device .btn-l,.device .btn-r{position:absolute;width:3px;border-radius:2px;
+    background:linear-gradient(#52525A,#26262B)}
+  .device .btn-l{left:-3px;top:112px;height:30px;box-shadow:0 44px 0 0 #3d3d44,0 82px 0 0 #3d3d44}
+  .device .btn-r{right:-3px;top:152px;height:74px}
+
+  /* steps */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+  .step{background:#fff;padding:32px;display:flex;flex-direction:column;gap:10px}
+  .step b{font-size:13px;font-weight:800;color:var(--accent)}
+  .step h3{margin:0;font-size:17px;font-weight:800;letter-spacing:-.02em}
+  .step p{font-size:14px;line-height:1.7;color:var(--ink-soft)}
+
+  /* cases */
+  .case{border:1px solid var(--line);border-radius:18px;overflow:hidden}
+  .case .shot{height:200px;overflow:hidden;background:var(--sand)}
+  .case .shot img{width:100%;height:100%;object-fit:cover;display:block}
+  .case .ph{height:200px}
+  .case-body{padding:24px;display:flex;flex-direction:column;gap:8px}
+  .case-body h3{margin:0;font-size:17px;font-weight:800;letter-spacing:-.02em}
+  .case-body p{font-size:14px;line-height:1.7;color:var(--ink-soft)}
+
+  /* quote */
+
+  /* faq */
+  .faq{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+  .qa{border:1px solid var(--line);border-radius:14px;padding:24px 26px;display:flex;flex-direction:column;gap:8px}
+  .qa h3{margin:0;font-size:16px;font-weight:800;letter-spacing:-.02em}
+  .qa p{font-size:14px;line-height:1.7;color:var(--ink-soft)}
+
+  /* cta + footer */
+  .cta{background:var(--black);border-radius:24px;padding:64px 48px;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap}
+  .cta h2{font-size:38px;color:#fff}
+  .cta p{font-size:15px;color:var(--muted-dark);margin-top:12px}
+  .cta-copy{flex:1;min-width:280px}
+
+  /* formulário de captação */
+  .lead{background:#fff;border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:14px;width:100%;max-width:440px}
+  .lead h3{margin:0;font-size:19px;font-weight:800;letter-spacing:-.025em;color:var(--ink)}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field label{font-size:12px;font-weight:700;color:var(--ink-soft)}
+  .field input,.field select,.field textarea{font-family:inherit;font-size:15px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 14px;width:100%}
+  .field textarea{resize:vertical;min-height:80px;line-height:1.6}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(201,162,39,.16)}
+  .field input.err,.field select.err{border-color:#C0392B}
+  .lead-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .lead button{font-family:inherit;font-size:15px;font-weight:700;padding:16px;border:0;border-radius:12px;background:var(--ink);color:#fff;cursor:pointer}
+  .lead button:hover{background:#000}
+  .lead .legal{font-size:11px;line-height:1.6;color:#8B8B84;text-align:center}
+
+  footer{background:var(--black);color:#8B8B84;padding:44px 48px;display:flex;align-items:flex-start;justify-content:space-between;gap:40px;font-size:13px;flex-wrap:wrap}
+  footer a{color:#8B8B84}
+  .fcols{display:flex;gap:56px;flex-wrap:wrap}
+  .fcol{display:flex;flex-direction:column;gap:10px}
+  .fcol b{color:#fff}
+
+  @media (max-width:960px){
+    header{flex-wrap:wrap;gap:14px;padding:16px 24px}
+    nav{order:3;width:100%;justify-content:space-between;gap:14px;font-size:13px}
+    .wrap{padding-inline:24px}
+    .hero{padding:72px 24px 80px}
+    .hero h1{font-size:42px}
+    .hero-stage{height:auto;margin-top:40px}
+    .mock-browser{position:relative;top:0;width:100%}
+    .mb-body{grid-template-columns:1fr;height:auto}
+    .mb-side{display:none}
+    .mb-kpis{grid-template-columns:1fr 1fr}
+    .mock-phone,.badge-float{display:none}
+      .grid-4,.grid-3,.steps,.delivery,.feats,.lead-row{grid-template-columns:1fr}
+    .lead{padding:22px}
+    .delivery{padding:36px 24px;gap:36px}
+        .cta{padding:40px 28px}
+    .cta h2{font-size:28px}
+    section h2{font-size:30px}
+    footer{padding:32px 24px}
+  }
+
+  /* revelação no scroll — só entra em ação com JS ligado (html.anim) */
+  html.anim .reveal{opacity:0;transform:translateY(22px);
+    transition:opacity .7s ease-out, transform .7s cubic-bezier(.22,.61,.36,1)}
+  html.anim .reveal.vis{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){
+    html.anim .reveal{opacity:1;transform:none;transition:none}
+  }
+
+  /* clicar num print abre ele inteiro, em tela cheia */
+  .zoomable{cursor:zoom-in}
+  .lightbox{position:fixed;inset:0;z-index:100;background:rgba(8,8,10,.94);
+    display:flex;align-items:center;justify-content:center;padding:40px 24px;
+    opacity:0;pointer-events:none;transition:opacity .25s ease}
+  .lightbox.aberto{opacity:1;pointer-events:auto}
+  .lightbox img{max-width:min(94vw,1180px);max-height:90vh;border-radius:16px;
+    box-shadow:0 40px 90px -20px rgba(0,0,0,.85);transform:scale(.97);
+    transition:transform .3s cubic-bezier(.22,.61,.36,1)}
+  .lightbox.aberto img{transform:none}
+  .lightbox .fechar{position:absolute;top:20px;right:24px;background:transparent;border:0;
+    color:#fff;font-family:Manrope,sans-serif;font-size:13px;font-weight:700;cursor:pointer;
+    padding:10px 14px;border-radius:10px}
+  .lightbox .fechar:hover{background:rgba(255,255,255,.12)}
+  @media (prefers-reduced-motion: reduce){
+    .lightbox,.lightbox img{transition:none}
+  }
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('anim')</script>
+
+<header>
+  <a class="logo" href="#top"><span class="mark">k</span><span class="word">kadosh<i class="quad"></i></span></a>
+  <nav>
+    <a href="#solucoes">Soluções</a>
+    <a href="#delivery">Delivery</a>
+    <a href="#como">Como funciona</a>
+    <a href="#cases">Cases</a>
+    <a href="#faq">Dúvidas</a>
+  </nav>
+  <div class="head-cta">
+    <a href="#entrar">Entrar</a>
+    <a class="btn" href="#contato">Falar com a equipe</a>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="eyebrow">SOLUÇÕES TECNOLÓGICAS</div>
+  <h1>Tecnologia que faz o pedido chegar</h1>
+  <p>Desenvolvemos sistemas, aplicativos e integrações para empresas que vendem e entregam. Delivery é onde somos mais fortes — e continuamos responsáveis pelo que construímos depois que entra no ar.</p>
+  <div class="actions">
+    <a class="btn" href="#contato">Falar com a equipe</a>
+    <a class="btn btn-ghost" href="#delivery">Ver solução de delivery</a>
+  </div>
+  <div class="hero-stage reveal" id="stage">
+
+    <div class="layer mock-browser" data-depth="10">
+      <div class="mb-bar">
+        <span class="mb-dot" style="background:#FF5F57"></span>
+        <span class="mb-dot" style="background:#FEBC2E"></span>
+        <span class="mb-dot" style="background:#28C840"></span>
+        <span class="mb-url">painel.kadosh.com.br</span>
+      </div>
+      <div class="mb-body">
+        <img src="assets/print-visao-geral.png" alt="Painel Kadosh — visão geral do dia com faturamento, pedidos e ticket médio">
+      </div>
+    </div>
+
+    <div class="layer mock-phone" data-depth="26">
+      <span class="island"></span>
+      <img src="assets/print-cardapio-mobile.jpg" alt="Cardápio da loja aberto no celular do cliente">
+    </div>
+
+    <div class="layer badge-float b-taxa" data-depth="40">
+      <div class="rot">COMISSÃO POR PEDIDO</div>
+      <div class="num">R$ 0,00</div>
+      <div class="sub">a venda é sua, inteira</div>
+    </div>
+
+    <div class="layer badge-float b-saldo" data-depth="34">
+      <div class="rot">PEDIDOS NO CANAL PRÓPRIO</div>
+      <div class="num">137 hoje</div>
+      <div class="sub" style="color:#28A745">▲ sem depender de marketplace</div>
+    </div>
+
+  </div>
+</section>
+
+<section class="wrap" id="solucoes" style="padding-top:96px;padding-bottom:40px">
+  <div class="sec-head">
+    <div class="eyebrow">O QUE FAZEMOS</div>
+    <h2>Quatro frentes, um time só</h2>
+  </div>
+  <div class="grid-4">
+    <div class="card reveal"><div class="dot" style="background:var(--accent)"></div><h3>Cardápio e delivery</h3><p>Seu cliente pede direto de você, sem comissão de aplicativo. O pedido cai na cozinha, imprime e segue para a produção.</p></div>
+    <div class="card reveal"><div class="dot"></div><h3>Sites sob medida</h3><p>Desenhado a partir do seu negócio, não é tema comprado com a sua cor por cima. Chega com domínio, hospedagem e e-mail já configurados.</p></div>
+    <div class="card reveal"><div class="dot"></div><h3>Sistemas sob medida</h3><p>Para quando a planilha não dá mais conta: vendas, clientes, estoque e financeiro construídos sobre o jeito que você já trabalha.</p></div>
+    <div class="card reveal"><div class="dot"></div><h3>Depois da entrega</h3><p>Hospedagem, atualização e suporte seguem inclusos. Um site no ar é responsabilidade contínua, não uma caixa entregue na porta.</p></div>
+  </div>
+</section>
+
+<section class="wrap" id="delivery" style="padding-top:70px;padding-bottom:96px">
+  <div class="delivery reveal">
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div class="eyebrow">NOSSO CARRO-CHEFE</div>
+      <h2>Uma operação de delivery inteira, do pedido à porta</h2>
+      <p>O cardápio sai com a <b>sua marca</b> — sua logo, suas cores, seu domínio. O cliente não vê o nome de nenhuma plataforma, e a base de clientes fica sua, não do aplicativo.</p>
+      <div class="feats">
+        <div class="feat"><i></i>App e site da sua marca</div>
+        <div class="feat"><i></i>Pedido impresso na cozinha</div>
+        <div class="feat"><i></i>Zero comissão por venda</div>
+        <div class="feat"><i></i>Taxa de entrega por bairro ou raio</div>
+        <div class="feat"><i></i>Fidelidade, cupons e PDV de balcão</div>
+        <div class="feat"><i></i>Campanhas e avisos no WhatsApp</div>
+      </div>
+      <div style="padding-top:8px;display:flex;align-items:center;gap:16px;flex-wrap:wrap"><a class="btn btn-dark" href="#contato">Quero ver funcionando</a><span style="font-size:14px;color:var(--ink-soft)">A partir de <b style="color:var(--ink)">R$ 179/mês</b>, sem comissão</span></div>
+    </div>
+    <div class="screens">
+      <div class="device">
+        <span class="btn-l"></span><span class="btn-r"></span>
+        <div class="screen">
+          <span class="island"></span>
+          <img src="assets/print-cardapio-mobile.jpg" alt="Cardápio digital da loja no celular do cliente, com fotos e preços dos produtos">
+        </div>
+      </div>
+      <div class="device">
+        <span class="btn-l"></span><span class="btn-r"></span>
+        <div class="screen">
+          <span class="island"></span>
+          <img src="assets/print-relatorios.jpg" alt="Relatórios no celular do dono: pedidos, faturamento, ticket médio e produto mais vendido">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="como" style="padding-bottom:96px">
+  <div class="sec-head">
+    <div class="eyebrow">COMO FUNCIONA</div>
+    <h2>Quatro etapas, na ordem, sem etapa invisível</h2>
+  </div>
+  <div class="steps">
+    <div class="step reveal"><b>01</b><h3>Conversa</h3><p>Você conta como o negócio funciona hoje. Na mesma conversa a gente diz o que dá e o que não dá para fazer.</p></div>
+    <div class="step reveal"><b>02</b><h3>Proposta</h3><p>Escopo, prazo e preço por escrito, item a item. Sem “a partir de” e sem surpresa no meio do caminho.</p></div>
+    <div class="step reveal"><b>03</b><h3>Construção</h3><p>Você acompanha por um link, do rascunho ao final. Ajuste é durante, enquanto ainda é barato mudar.</p></div>
+    <div class="step reveal"><b>04</b><h3>No ar</h3><p>Publicado com tudo configurado. Daí em diante, hospedagem, atualização e suporte continuam com a gente.</p></div>
+  </div>
+</section>
+
+<section class="wrap" id="cases" style="padding-bottom:96px">
+  <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:26px">
+    <h2>Cases</h2>
+    <a href="#cases" style="font-size:14px;font-weight:600;color:var(--accent)">Ver todos</a>
+  </div>
+  <div class="grid-3">
+    <div class="case reveal"><div class="shot"><img src="assets/case-vento-aragano.jpg" alt="Equipe do Vento Aragano no estande da Rota Gastronômica em Rio Verde" style="object-position:center 22%"></div><div class="case-body"><h3>Vento Aragano</h3><p>Cardápio próprio, PDV de balcão e impressão automática na cozinha. Programa de fidelidade por pontos e taxa de entrega calculada por região no mapa.</p></div></div>
+    <div class="case reveal"><div class="shot"><img src="assets/case-trilhas.jpg" alt="Loja da Trilhas da Amazônia em Rio Verde, com o fusca da marca em frente"></div><div class="case-body"><h3>Trilhas da Amazônia</h3><p>Açaiteria em Rio Verde. Canal de venda direto com pedido caindo impresso na cozinha e campanhas promocionais no WhatsApp.</p></div></div>
+    <div class="case reveal"><div class="shot"><img src="assets/case-pizzas-imperial.jpg" alt="Fachada da Pizza's Imperial em Rio Verde"></div><div class="case-body"><h3>Pizza's Imperial</h3><p>Pizzaria e hamburgueria em Rio Verde. Cardápio próprio com pizza meio a meio, em que o preço sai pela média dos sabores escolhidos.</p></div></div>
+  </div>
+</section>
+
+
+<section class="wrap" id="faq" style="padding-top:96px;padding-bottom:96px">
+  <div class="faq">
+    <h2 style="margin-bottom:14px">Dúvidas frequentes</h2>
+    <div class="qa reveal"><h3>Quanto custa?</h3><p>Os planos começam em <b>R$ 179 por mês</b>, sem comissão por pedido. O valor final depende do que a sua operação precisa — e vai por escrito na proposta, item a item, antes de começar.</p></div>
+    <div class="qa reveal"><h3>Vocês cobram comissão por pedido?</h3><p>Não. Você paga a mensalidade combinada antes, e nada por pedido. O que o seu cliente paga entra inteiro no seu caixa.</p></div>
+    <div class="qa reveal"><h3>O cardápio fica com a minha marca ou com a de vocês?</h3><p>Com a sua. Sua logo, suas cores e o seu domínio — o cliente final não vê o nome Kadosh em lugar nenhum. Quem constrói a marca é você.</p></div>
+    <div class="qa reveal"><h3>E depois que entra no ar?</h3><p>Hospedagem, atualização e suporte continuam com a gente. E o atendimento é direto com quem construiu: sem abrir chamado e sem repetir o problema para três pessoas.</p></div>
+    <div class="qa reveal"><h3>Quanto tempo leva?</h3><p>Depende do escopo, mas o prazo vai por escrito na proposta antes de começar. Se algo atrasar, você fica sabendo por nós — antes de precisar perguntar.</p></div>
+    <div class="qa reveal"><h3>Funciona com o sistema que já uso?</h3><p>Sim. Conversamos com ERP, PDV, WhatsApp e meios de pagamento já em uso. O que dá e o que não dá a gente diz já na primeira conversa.</p></div>
+    <div class="qa reveal"><h3>Atendem fora do delivery?</h3><p>Sim. Delivery é o carro-chefe, mas fazemos site sob medida e sistema de operação para escritórios, lojas e distribuidoras.</p></div>
+  </div>
+</section>
+
+<section class="wrap" id="contato" style="padding-bottom:110px">
+  <div class="cta">
+    <div class="cta-copy">
+      <h2>Conte como é a sua operação</h2>
+      <p>Preencha ao lado e a conversa abre direto no WhatsApp, já com o resumo do seu negócio. Respondemos em até um dia útil com um diagnóstico inicial.</p>
+      <p style="margin-top:22px">Prefere escrever você mesmo?<br>
+        <a data-link="wa" href="#" style="color:#fff;font-weight:700;border-bottom:1px solid var(--accent)">Chamar no WhatsApp</a>
+        &nbsp;·&nbsp;
+      </p>
+    </div>
+
+    <form class="lead" id="form-lead" novalidate>
+      <h3>Falar com a equipe</h3>
+      <div class="field">
+        <label for="f-nome">Seu nome</label>
+        <input id="f-nome" name="nome" type="text" autocomplete="name" placeholder="Como te chamamos?" required>
+      </div>
+      <div class="field">
+        <label for="f-zap">Seu WhatsApp</label>
+        <input id="f-zap" name="zap" type="tel" inputmode="tel" autocomplete="tel" placeholder="(64) 90000-0000" required>
+      </div>
+      <div class="lead-row">
+        <div class="field">
+          <label for="f-seg">Segmento</label>
+          <select id="f-seg" name="segmento" required>
+            <option value="">Selecione…</option>
+            <option>Pizzaria</option>
+            <option>Hamburgueria</option>
+            <option>Restaurante</option>
+            <option>Açaiteria / sorveteria</option>
+            <option>Mercado / distribuidora</option>
+            <option>Outro</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-lojas">Lojas</label>
+          <select id="f-lojas" name="lojas">
+            <option>1 loja</option>
+            <option>2 a 4 lojas</option>
+            <option>5 ou mais</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="f-msg">O que você precisa?</label>
+        <textarea id="f-msg" name="mensagem" placeholder="Ex.: hoje só vendo pelo iFood e quero ter app próprio."></textarea>
+      </div>
+      <button type="submit">Abrir conversa no WhatsApp</button>
+      <div class="legal">Sem compromisso. Não usamos seus dados para nada além do contato.</div>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div class="logo"><span class="mark">k</span><span class="word" style="font-size:16px">kadosh<i class="quad"></i></span></div>
+    <div style="color:#6E6E68">CNPJ 60.308.078/0001-08</div>
+  </div>
+  <div class="fcols">
+    <div class="fcol"><b>Soluções</b><a href="#delivery">Delivery</a><a href="#solucoes">Sistemas</a><a href="#solucoes">Integrações</a></div>
+    <div class="fcol"><b>Empresa</b><a href="#cases">Cases</a><a href="#como">Como funciona</a><a href="#faq">Dúvidas</a></div>
+    <div class="fcol"><b>Contato</b><a data-link="wa" href="#">WhatsApp</a></div>
+  </div>
+</footer>
+
+<script>
+/* =====================================================================
+   CONFIGURAÇÃO — troque os 3 valores abaixo e o site inteiro
+   (botões, rodapé e formulário) passa a apontar para o lugar certo.
+   ===================================================================== */
+const KADOSH = {
+  whatsapp : "5564993404936"                // DDI 55 + DDD 64 + número
+};
+/* ===================================================================== */
+
+const waLink = t => "https://wa.me/" + KADOSH.whatsapp + (t ? "?text=" + encodeURIComponent(t) : "");
+
+document.querySelectorAll('[data-link="wa"]').forEach(a => a.href = waLink());
+document.querySelectorAll('[data-mail-text]').forEach(a => a.textContent = KADOSH.email);
+
+
+/* clicar num print do sistema abre ele inteiro (o do site fica pequeno demais
+   para ler). Fecha clicando fora, no botão, ou com Esc. */
+(function(){
+  const prints = document.querySelectorAll('.mock-phone img, .device img, .mb-body img');
+  if (!prints.length) return;
+
+  const caixa = document.createElement('div');
+  caixa.className = 'lightbox';
+  caixa.setAttribute('role', 'dialog');
+  caixa.setAttribute('aria-modal', 'true');
+  caixa.innerHTML = '<button class="fechar" type="button" aria-label="Fechar">Fechar ✕</button><img alt="">';
+  document.body.appendChild(caixa);
+
+  const grande = caixa.querySelector('img');
+  const botao = caixa.querySelector('.fechar');
+  let ultimo = null;
+
+  const abrir = (img) => {
+    grande.src = img.currentSrc || img.src;
+    grande.alt = img.alt || '';
+    caixa.classList.add('aberto');
+    document.body.style.overflow = 'hidden';
+    ultimo = img;
+    botao.focus();
+  };
+  const fechar = () => {
+    caixa.classList.remove('aberto');
+    document.body.style.overflow = '';
+    if (ultimo) { ultimo.focus?.(); ultimo = null; }
+  };
+
+  prints.forEach((img) => {
+    img.classList.add('zoomable');
+    img.setAttribute('tabindex', '0');
+    img.setAttribute('role', 'button');
+    img.addEventListener('click', () => abrir(img));
+    img.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrir(img); }
+    });
+  });
+
+  caixa.addEventListener('click', fechar);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && caixa.classList.contains('aberto')) fechar();
+  });
+})();
+
+/* revela os blocos conforme a página rola, em cascata.
+   Quem pediu menos movimento no sistema vê tudo direto, sem animação. */
+(function(){
+  const alvos = [...document.querySelectorAll('.reveal')];
+  const suave = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!suave || !('IntersectionObserver' in window)) {
+    alvos.forEach(el => el.classList.add('vis'));
+    return;
+  }
+
+  // itens irmãos entram escalonados, para não aparecerem todos de uma vez
+  const contagem = new Map();
+  alvos.forEach(el => {
+    const pai = el.parentElement;
+    const i = contagem.get(pai) || 0;
+    el.style.transitionDelay = Math.min(i * 70, 350) + 'ms';
+    contagem.set(pai, i + 1);
+  });
+
+  const observador = new IntersectionObserver((entradas) => {
+    entradas.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('vis');
+      observador.unobserve(e.target);   // revela uma vez só
+    });
+  }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
+
+  alvos.forEach(el => observador.observe(el));
+})();
+
+/* parallax: cada camada do mockup segue o mouse numa velocidade,
+   pelo data-depth. Só liga em tela com mouse e se o usuário não
+   tiver pedido menos animação no sistema. */
+const palco = document.getElementById('stage');
+const podeAnimar = matchMedia('(hover:hover)').matches
+                && !matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+if (palco && podeAnimar) {
+  const camadas = [...palco.querySelectorAll('.layer')];
+  const area = palco.closest('.hero');
+  let parado = true;
+
+  area.addEventListener('mousemove', e => {
+    const r = area.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width  - .5;
+    const y = (e.clientY - r.top)  / r.height - .5;
+    if (parado) { camadas.forEach(el => el.style.transition = 'transform .18s ease-out'); parado = false; }
+    camadas.forEach(el => {
+      const d = +el.dataset.depth;
+      el.style.transform = `translate3d(${(-x*d).toFixed(1)}px, ${(-y*d*.6).toFixed(1)}px, 0)`;
+    });
+  });
+
+  area.addEventListener('mouseleave', () => {
+    parado = true;
+    camadas.forEach(el => { el.style.transition = ''; el.style.transform = 'translate3d(0,0,0)'; });
+  });
+}
+
+/* máscara leve do telefone */
+const zap = document.getElementById('f-zap');
+zap.addEventListener('input', () => {
+  const d = zap.value.replace(/\D/g, '').slice(0, 11);
+  zap.value = d.length > 6 ? `(${d.slice(0,2)}) ${d.slice(2, d.length-4)}-${d.slice(-4)}`
+            : d.length > 2 ? `(${d.slice(0,2)}) ${d.slice(2)}`
+            : d;
+});
+
+/* de onde veio o lead: ?utm_source= , ?origem= ou o site que indicou */
+const p = new URLSearchParams(location.search);
+const origem = p.get('utm_source') || p.get('origem') || document.referrer || 'acesso direto';
+
+document.getElementById('form-lead').addEventListener('submit', e => {
+  e.preventDefault();
+  const f = e.target;
+  const val = n => f.elements[n].value.trim();
+
+  let ok = true;
+  ['nome', 'zap', 'segmento'].forEach(n => {
+    const el = f.elements[n], vazio = !el.value.trim();
+    el.classList.toggle('err', vazio);
+    if (vazio) ok = false;
+  });
+  if (!ok) { f.querySelector('.err').focus(); return; }
+
+  const msg = 'Olá, Kadosh! Vim pelo site.\n\n'
+    + `Nome: ${val('nome')}\n`
+    + `WhatsApp: ${val('zap')}\n`
+    + `Segmento: ${val('segmento')}\n`
+    + `Lojas: ${val('lojas')}\n`
+    + (val('mensagem') ? `Preciso de: ${val('mensagem')}\n` : '')
+    + `\n(origem: ${origem})`;
+
+  const url = waLink(msg);
+  if (!window.open(url, '_blank', 'noopener')) location.href = url;
+});
+</script>
+
+</body>
+</html>
