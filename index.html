@@ -170,9 +170,19 @@
   .step p{font-size:14px;line-height:1.7;color:var(--ink-soft)}
 
   /* cases */
-  .case{border:1px solid var(--line);border-radius:18px;overflow:hidden}
-  .case .shot{height:200px;overflow:hidden;background:var(--sand)}
-  .case .shot img{width:100%;height:100%;object-fit:cover;display:block}
+  .case{border:1px solid var(--line);border-radius:18px;overflow:hidden;
+    transition:border-color .3s,box-shadow .35s,transform .35s}
+  .case:hover{border-color:#D6D6CE;transform:translateY(-6px);box-shadow:0 20px 44px rgba(17,17,17,.13)}
+  .case .shot{height:200px;overflow:hidden;background:var(--sand);position:relative}
+  .case .shot img{width:100%;height:100%;object-fit:cover;display:block;
+    transition:transform .55s cubic-bezier(.22,.61,.36,1),filter .35s}
+  .case:hover .shot img{transform:scale(1.07);filter:saturate(1.08)}
+  /* verniz dourado que desce sobre a foto ao passar o mouse */
+  .case .shot::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;
+    background:linear-gradient(to top,rgba(11,11,12,.55),rgba(11,11,12,0) 58%);transition:opacity .35s}
+  .case:hover .shot::after{opacity:1}
+  .case h3{transition:color .3s}
+  .case:hover h3{color:var(--accent)}
   .case .ph{height:200px}
   .case-body{padding:24px;display:flex;flex-direction:column;gap:8px}
   .case-body h3{margin:0;font-size:17px;font-weight:800;letter-spacing:-.02em}
@@ -250,6 +260,11 @@
   html.anim .reveal{opacity:0;transform:translateY(22px);
     transition:opacity .7s ease-out, transform .7s cubic-bezier(.22,.61,.36,1)}
   html.anim .reveal.vis{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){
+    .case,.case .shot img{transition:none}
+    .case:hover{transform:none}
+    .case:hover .shot img{transform:none}
+  }
   @media (prefers-reduced-motion: reduce){
     html.anim .reveal{opacity:1;transform:none;transition:none}
   }
