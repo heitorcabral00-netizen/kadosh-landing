@@ -187,6 +187,11 @@
   .case-body{padding:24px;display:flex;flex-direction:column;gap:8px}
   .case-body h3{margin:0;font-size:17px;font-weight:800;letter-spacing:-.02em}
   .case-body p{font-size:14px;line-height:1.7;color:var(--ink-soft)}
+  /* a lista se monta sozinha a partir do array CASES (no <script> do fim).
+     flex em vez de grid para a última fileira, quando incompleta, ficar
+     centralizada — 4 ou 5 cases não deixam buraco na direita. */
+  .cases-grid{display:flex;flex-wrap:wrap;gap:20px;justify-content:center}
+  .cases-grid>.case{flex:0 1 calc((100% - 40px)/3);min-width:0}
 
   /* quote */
 
@@ -239,6 +244,7 @@
     .mb-kpis{grid-template-columns:1fr 1fr}
     .mock-phone,.badge-float{display:none}
       .grid-4,.grid-3,.steps,.delivery,.feats,.lead-row{grid-template-columns:1fr}
+    .cases-grid>.case{flex-basis:100%}
     .lead{padding:22px}
     .delivery{padding:36px 24px;gap:36px}
     .screens{gap:14px}
@@ -414,11 +420,8 @@
     <h2>Cases</h2>
     <a href="#cases" style="font-size:14px;font-weight:600;color:var(--accent)">Ver todos</a>
   </div>
-  <div class="grid-3">
-    <div class="case reveal"><div class="shot"><img src="assets/case-vento-aragano.jpg" alt="Equipe do Vento Aragano no estande da Rota Gastronômica em Rio Verde" style="object-position:center 22%"></div><div class="case-body"><h3>Vento Aragano</h3><p>Cardápio próprio, PDV de balcão e impressão automática na cozinha. Programa de fidelidade por pontos e taxa de entrega calculada por região no mapa.</p></div></div>
-    <div class="case reveal"><div class="shot"><img src="assets/case-trilhas.jpg" alt="Loja da Trilhas da Amazônia em Rio Verde, com o fusca da marca em frente"></div><div class="case-body"><h3>Trilhas da Amazônia</h3><p>Açaiteria em Rio Verde. Canal de venda direto com pedido caindo impresso na cozinha e campanhas promocionais no WhatsApp.</p></div></div>
-    <div class="case reveal"><div class="shot"><img src="assets/case-pizzas-imperial.jpg" alt="Fachada da Pizza's Imperial em Rio Verde"></div><div class="case-body"><h3>Pizza's Imperial</h3><p>Pizzaria e hamburgueria em Rio Verde. Cardápio próprio com pizza meio a meio, em que o preço sai pela média dos sabores escolhidos.</p></div></div>
-  </div>
+  <!-- os cards saem do array CASES, lá no <script> do fim do arquivo -->
+  <div class="cases-grid" id="lista-cases"></div>
 </section>
 
 
@@ -512,6 +515,105 @@ const KADOSH = {
   formKey  : ""                             // chave do Web3Forms (web3forms.com). Vazio = cai no WhatsApp
 };
 /* ===================================================================== */
+
+
+/* =====================================================================
+   CASES — para colocar um cliente novo na vitrine, acrescente um bloco
+   aqui embaixo. Não precisa mexer em mais nada: a seção "Cases" se monta
+   sozinha e a última fileira, se ficar incompleta, já sai centralizada.
+
+     nome  : como aparece no título do card
+     foto  : arquivo dentro de assets/ (larga, uns 800x500 — o card corta
+             em 200px de altura, então o assunto precisa estar no meio)
+     alt   : descrição da foto, para leitor de tela e para o Google
+     foco  : opcional. Só use se a foto cortar no lugar errado —
+             "center 22%" puxa o corte para cima, "center 70%" para baixo
+     texto : o que foi feito para esse cliente, 1 ou 2 frases
+   ===================================================================== */
+const CASES = [
+  {
+    nome : "Vento Aragano",
+    foto : "assets/case-vento-aragano.jpg",
+    alt  : "Equipe do Vento Aragano no estande da Rota Gastronômica em Rio Verde",
+    foco : "center 22%",
+    texto: "Cardápio próprio, PDV de balcão e impressão automática na cozinha. Programa de fidelidade por pontos e taxa de entrega calculada por região no mapa."
+  },
+  {
+    nome : "Trilhas da Amazônia",
+    foto : "assets/case-trilhas.jpg",
+    alt  : "Loja da Trilhas da Amazônia em Rio Verde, com o fusca da marca em frente",
+    texto: "Açaiteria em Rio Verde. Canal de venda direto com pedido caindo impresso na cozinha e campanhas promocionais no WhatsApp."
+  },
+  {
+    nome : "Pizza's Imperial",
+    foto : "assets/case-pizzas-imperial.jpg",
+    alt  : "Fachada da Pizza's Imperial em Rio Verde",
+    texto: "Pizzaria e hamburgueria em Rio Verde. Cardápio próprio com pizza meio a meio, em que o preço sai pela média dos sabores escolhidos."
+  }
+];
+/* ===================================================================== */
+
+/* Endereço do painel (kadosh-sites). É de lá que vêm os cases cadastrados.
+   Deixe vazio para o site usar só a lista de cima e não chamar ninguém. */
+const PAINEL = "https://kadosh-sites.onrender.com";
+
+/* monta os cards de case. Roda antes da animação de entrada mais abaixo,
+   senão os cards nasceriam invisíveis. */
+function montarCases(lista){
+  const alvo = document.getElementById('lista-cases');
+  if (!alvo) return;
+  alvo.innerHTML = '';
+
+  lista.forEach(c => {
+    const card = document.createElement('div');
+    card.className = 'case reveal';
+
+    const shot = document.createElement('div');
+    shot.className = 'shot';
+    const foto = document.createElement('img');
+    foto.src = c.foto;
+    foto.alt = c.alt || c.nome;
+    if (c.foco) foto.style.objectPosition = c.foco;
+    shot.appendChild(foto);
+
+    const corpo = document.createElement('div');
+    corpo.className = 'case-body';
+    const titulo = document.createElement('h3');
+    titulo.textContent = c.nome;
+    const texto = document.createElement('p');
+    texto.textContent = c.texto;
+    corpo.append(titulo, texto);
+
+    card.append(shot, corpo);
+    alvo.appendChild(card);
+  });
+}
+
+/* A lista escrita aqui no arquivo aparece na hora, sem esperar ninguém.
+   Em seguida, se o painel responder, ela é trocada pelo que estiver
+   cadastrado lá. É por isso que a vitrine nunca fica vazia: painel fora do
+   ar, internet ruim ou domínio trocado só significam "fica a lista de cima". */
+montarCases(CASES);
+
+(function(){
+  if (!PAINEL) return;
+
+  // AbortSignal.timeout não existe em navegador antigo — sem ele, sem limite
+  const limite = (typeof AbortSignal !== 'undefined' && AbortSignal.timeout)
+    ? { signal: AbortSignal.timeout(8000) } : {};
+
+  fetch(PAINEL + '/api/landing/cases', limite)
+    .then(r => r.ok ? r.json() : Promise.reject(new Error('painel respondeu ' + r.status)))
+    .then(doPainel => {
+      if (!Array.isArray(doPainel) || doPainel.length === 0) return;
+      montarCases(doPainel);
+      // estes cards nascem depois que a animação de entrada já passou por aqui,
+      // então entram já visíveis em vez de ficar presos no opacity 0
+      document.querySelectorAll('#lista-cases .reveal').forEach(el => el.classList.add('vis'));
+    })
+    .catch(() => {});
+})();
+
 
 const waLink = t => "https://wa.me/" + KADOSH.whatsapp + (t ? "?text=" + encodeURIComponent(t) : "");
 
