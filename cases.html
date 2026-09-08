@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<!--
+  Página de cases — é para onde o "Ver todos" da home aponta.
+
+  Usa o MESMO assets/estilo.css e o MESMO assets/site.js da home: nada de
+  estilo nem de comportamento é reescrito aqui, então as duas páginas não
+  divergem com o tempo. O script é defensivo — só mexe no que existe na
+  página — e por isso ele preenche o topo, os cases e o rodapé daqui sem
+  precisar saber que esta página existe.
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cases — Kadosh</title>
+<meta name="description" content="Operações que rodam com sistema da Kadosh: cardápio próprio, pedido impresso na cozinha e painel para acompanhar o dia.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kadosh">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Cases — Kadosh">
+<meta property="og:description" content="Clientes que vendem pelo canal próprio, sem comissão de aplicativo.">
+<meta property="og:url" content="https://kadoshsistemas.com.br/cases.html">
+<meta property="og:image" content="https://kadoshsistemas.com.br/assets/og-kadosh.jpg">
+<meta name="theme-color" content="#0B0B0C">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/estilo.css">
+</head>
+<body>
+<script>document.documentElement.classList.add('anim')</script>
+
+<header>
+  <a class="logo" href="index.html"><span class="mark">k</span><span class="word">kadosh<i class="quad"></i></span></a>
+  <nav>
+    <a href="index.html#solucoes">Soluções</a>
+    <a href="index.html#delivery">Delivery</a>
+    <a href="index.html#como">Como funciona</a>
+    <a href="index.html#cases">Cases</a>
+    <a href="index.html#faq">Dúvidas</a>
+  </nav>
+  <div class="head-cta">
+    <a class="btn" href="index.html#contato">Falar com a equipe</a>
+  </div>
+</header>
+
+<main>
+<section class="wrap" id="cases" style="padding-top:96px;padding-bottom:110px">
+  <div class="sec-head">
+    <div class="eyebrow">QUEM JÁ ESTÁ RODANDO</div>
+    <h2>Cases</h2>
+  </div>
+
+  <!-- os cards saem do array CASES, no assets/site.js, e são trocados pelos
+       cadastrados no painel quando ele responde -->
+  <div class="cases-grid" id="lista-cases"></div>
+
+  <div style="margin-top:56px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+    <a class="btn btn-dark" href="index.html#contato">Falar com a equipe</a>
+    <a href="index.html" style="font-size:14px;font-weight:600;color:var(--accent)">Voltar para o site</a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div class="logo"><span class="mark">k</span><span class="word" style="font-size:16px">kadosh<i class="quad"></i></span></div>
+    <div style="color:#6E6E68">CNPJ 60.308.078/0001-08</div>
+  </div>
+  <div class="fcols">
+    <div class="fcol"><b>Soluções</b><a href="index.html#delivery">Delivery</a><a href="index.html#solucoes">Sistemas</a><a href="index.html#solucoes">Integrações</a></div>
+    <div class="fcol"><b>Empresa</b><a href="index.html#cases">Cases</a><a href="index.html#como">Como funciona</a><a href="index.html#faq">Dúvidas</a></div>
+    <div class="fcol"><b>Contato</b><a data-link="wa" href="#">WhatsApp</a></div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>
