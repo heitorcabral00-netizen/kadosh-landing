@@ -860,7 +860,106 @@ montarCases(CASES);
     }
   }
 
-  const previa = new URLSearchParams(location.search).get('previa');
+  /* ===================================================================
+     MODO EDITOR
+
+     Quando o site é aberto dentro do painel (?editor=1, num iframe), ele
+     para de buscar conteúdo e passa a receber o rascunho por mensagem, a
+     cada tecla digitada — é a prévia ao vivo. Também devolve ao painel a
+     seção em que se clicou, para abrir a edição dela.
+
+     Nada disso liga fora do iframe: o visitante do site nunca entra aqui.
+     =================================================================== */
+  const SECOES_DOM = [
+    ['header',   'header'],
+    ['hero',     '#top'],
+    ['solucoes', '#solucoes'],
+    ['delivery', '#delivery'],
+    ['como',     '#como'],
+    ['cases',    '#cases'],
+    ['faq',      '#faq'],
+    ['contato',  '#contato'],
+    ['rodape',   'footer'],
+  ];
+
+  const ORIGENS_CONFIAVEIS = [
+    'https://kadosh-sites.onrender.com',
+    'http://localhost:3000',
+  ];
+
+  function ligarModoEditor(){
+    document.documentElement.classList.add('modo-editor');
+
+    const estilo = document.createElement('style');
+    estilo.textContent =
+      '.modo-editor [data-secao]{outline:2px solid transparent;outline-offset:-2px;' +
+      'transition:outline-color .15s,background-color .15s;cursor:pointer}' +
+      '.modo-editor [data-secao]:hover{outline-color:#C9A227}' +
+      '.modo-editor [data-secao].secao-ativa{outline-color:#C9A227;outline-width:3px}' +
+      '.modo-editor .marca-secao{position:fixed;z-index:99999;background:#0B0B0C;color:#fff;' +
+      'font:600 11px/1 Manrope,sans-serif;letter-spacing:.04em;padding:6px 10px;border-radius:6px;' +
+      'pointer-events:none;opacity:0;transition:opacity .15s;box-shadow:0 4px 14px rgba(0,0,0,.3)}' +
+      '.modo-editor .marca-secao.vis{opacity:1}';
+    document.head.appendChild(estilo);
+
+    const marca = document.createElement('div');
+    marca.className = 'marca-secao';
+    document.body.appendChild(marca);
+
+    const nomes = {
+      header: 'Topo', hero: 'Abertura', solucoes: 'Quatro frentes', delivery: 'Carro-chefe',
+      como: 'Como funciona', cases: 'Cases', faq: 'Dúvidas', contato: 'Contato', rodape: 'Rodapé',
+    };
+
+    SECOES_DOM.forEach(([chave, sel]) => {
+      const el = q(sel);
+      if (!el) return;
+      el.setAttribute('data-secao', chave);
+
+      el.addEventListener('mouseenter', () => {
+        const r = el.getBoundingClientRect();
+        marca.textContent = 'Editar ' + (nomes[chave] || chave);
+        marca.style.left = Math.max(8, r.left + 12) + 'px';
+        marca.style.top = Math.max(8, r.top + 12) + 'px';
+        marca.classList.add('vis');
+      });
+      el.addEventListener('mouseleave', () => marca.classList.remove('vis'));
+
+      el.addEventListener('click', (e) => {
+        e.preventDefault();     // no editor, clicar não navega
+        e.stopPropagation();
+        qa('[data-secao]').forEach(s => s.classList.remove('secao-ativa'));
+        el.classList.add('secao-ativa');
+        parent.postMessage({ tipo: 'kadosh-secao', secao: chave }, '*');
+      });
+    });
+
+    // links e formulário não funcionam dentro do editor
+    document.addEventListener('submit', e => e.preventDefault(), true);
+
+    window.addEventListener('message', (ev) => {
+      if (ORIGENS_CONFIAVEIS.indexOf(ev.origin) === -1) return;
+      const msg = ev.data || {};
+      if (msg.tipo === 'kadosh-conteudo') {
+        if (msg.conteudo) aplicar(msg.conteudo);
+        if (Array.isArray(msg.cases) && msg.cases.length) montarCases(msg.cases);
+      }
+      if (msg.tipo === 'kadosh-focar') {
+        const alvo = q('[data-secao="' + msg.secao + '"]');
+        if (alvo) alvo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    parent.postMessage({ tipo: 'kadosh-pronto' }, '*');
+  }
+
+  const params = new URLSearchParams(location.search);
+  if (params.get('editor') === '1' && window.parent !== window) {
+    ligarModoEditor();
+    return;                    // no editor o conteúdo vem por mensagem
+  }
+
+  const previa = params.get('previa');
   const endereco = PAINEL + '/api/landing/conteudo' + (previa ? '?previa=' + encodeURIComponent(previa) : '');
   const limite = (typeof AbortSignal !== 'undefined' && AbortSignal.timeout)
     ? { signal: AbortSignal.timeout(8000) } : {};
