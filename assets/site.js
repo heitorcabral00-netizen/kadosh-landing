@@ -15,7 +15,7 @@ const KADOSH = {
    sozinha e a última fileira, se ficar incompleta, já sai centralizada.
 
      nome  : como aparece no título do card
-     foto  : arquivo dentro de assets/ (larga, uns 800x500 — o card corta
+     foto  : arquivo dentro de assets/, com barra na frente (/assets/…) (larga, uns 800x500 — o card corta
              em 200px de altura, então o assunto precisa estar no meio)
      alt   : descrição da foto, para leitor de tela e para o Google
      foco  : opcional. Só use se a foto cortar no lugar errado —
@@ -25,20 +25,20 @@ const KADOSH = {
 const CASES = [
   {
     nome : "Vento Aragano",
-    foto : "assets/case-vento-aragano.jpg",
+    foto : "/assets/case-vento-aragano.jpg",
     alt  : "Equipe do Vento Aragano no estande da Rota Gastronômica em Rio Verde",
     foco : "center 22%",
     texto: "Cardápio próprio, PDV de balcão e impressão automática na cozinha. Programa de fidelidade por pontos e taxa de entrega calculada por região no mapa."
   },
   {
     nome : "Trilhas da Amazônia",
-    foto : "assets/case-trilhas.jpg",
+    foto : "/assets/case-trilhas.jpg",
     alt  : "Loja da Trilhas da Amazônia em Rio Verde, com o fusca da marca em frente",
     texto: "Açaiteria em Rio Verde. Canal de venda direto com pedido caindo impresso na cozinha e campanhas promocionais no WhatsApp."
   },
   {
     nome : "Pizza's Imperial",
-    foto : "assets/case-pizzas-imperial.jpg",
+    foto : "/assets/case-pizzas-imperial.jpg",
     alt  : "Fachada da Pizza's Imperial em Rio Verde",
     texto: "Pizzaria e hamburgueria em Rio Verde. Cardápio próprio com pizza meio a meio, em que o preço sai pela média dos sabores escolhidos."
   }
@@ -85,6 +85,16 @@ function montarCases(lista){
 
     const corpo = document.createElement('div');
     corpo.className = 'case-body';
+
+    /* A categoria aparece só na página de cases. Na home ela mudaria o
+       desenho do card, e o combinado é não mexer no visual da home. */
+    if (!NA_HOME && c.categoria) {
+      const cat = document.createElement('div');
+      cat.className = 'eyebrow';
+      cat.textContent = c.categoria;
+      corpo.appendChild(cat);
+    }
+
     const titulo = document.createElement('h3');
     titulo.textContent = c.nome;
     const texto = document.createElement('p');
@@ -96,11 +106,29 @@ function montarCases(lista){
   });
 }
 
+/* Esta é a home? Só "/" e "/index.html" são. Repare que "/cases/" também
+   termina em barra — por isso a comparação é exata, e não "termina em /". */
+const NA_HOME = location.pathname === '/' || /\/index\.html$/.test(location.pathname);
+
+/* A home mostra uma quantidade; a página de cases mostra todos os publicados.
+   Quem manda na quantidade é o painel, e ela chega junto com o conteúdo — que
+   pode chegar antes ou depois da lista de cases. Por isso as duas coisas são
+   guardadas e a vitrine é remontada quando qualquer uma das duas muda. */
+let casesDoPainel = null;
+let casesNaHome = 3;
+
+function aplicarCases(){
+  const lista = casesDoPainel || CASES;
+  montarCases(NA_HOME ? lista.slice(0, casesNaHome) : lista);
+  // cards montados depois da animação de entrada precisam ser revelados
+  document.querySelectorAll('#lista-cases .reveal').forEach(revelarBloco);
+}
+
 /* A lista escrita aqui no arquivo aparece na hora, sem esperar ninguém.
    Em seguida, se o painel responder, ela é trocada pelo que estiver
    cadastrado lá. É por isso que a vitrine nunca fica vazia: painel fora do
    ar, internet ruim ou domínio trocado só significam "fica a lista de cima". */
-montarCases(CASES);
+montarCases(NA_HOME ? CASES.slice(0, casesNaHome) : CASES);
 
 (function(){
   if (!PAINEL) return;
@@ -113,10 +141,8 @@ montarCases(CASES);
     .then(r => r.ok ? r.json() : Promise.reject(new Error('painel respondeu ' + r.status)))
     .then(doPainel => {
       if (!Array.isArray(doPainel) || doPainel.length === 0) return;
-      montarCases(doPainel);
-      // estes cards nascem depois que a animação de entrada já passou por aqui:
-      // sem isto, ficariam presos no opacity 0
-      document.querySelectorAll('#lista-cases .reveal').forEach(revelarBloco);
+      casesDoPainel = doPainel;
+      aplicarCases();
     })
     .catch(() => {});
 })();
@@ -164,15 +190,13 @@ montarCases(CASES);
 
   const escreverEm = (sel, texto, cfg, estilo) => escrever(q(sel), texto, cfg, estilo);
 
-  /* Fora da home, uma âncora como #contato não existe na página: ela precisa
-     virar index.html#contato, senão o menu vindo do painel não leva a lugar
-     nenhum na página de cases. */
-  const NA_HOME = /(\/|\/index\.html)$/.test(location.pathname);
-
-  /* "wa" abre o WhatsApp; o resto vai como está (âncora ou endereço). */
+  /* "wa" abre o WhatsApp; o resto vai como está.
+     Fora da home, uma âncora como #contato não existe na página: vira
+     /#contato, para o menu levar à seção certa da home. Endereço de arquivo
+     nunca aparece — o visitante só vê / e /cases. */
   function destino(d, cfg){
     if (d === 'wa') return 'https://wa.me/' + (cfg.whatsapp || KADOSH.whatsapp);
-    if (d && d.charAt(0) === '#' && !NA_HOME) return 'index.html' + d;
+    if (d && d.charAt(0) === '#' && !NA_HOME) return '/' + d;
     return d || '#';
   }
 
@@ -298,9 +322,16 @@ montarCases(CASES);
       }, '.step');
     }
 
-    /* cases (os cards em si vêm da outra tela do painel) */
+    /* cases: o título e o link daqui; os cards vêm da lista de cases */
     if (c.cases) {
       escreverEm('#cases h2', c.cases.titulo, cfg);
+
+      // quantos aparecem na home é configurado no painel
+      const quantos = Number(c.cases.naHome);
+      if (Number.isFinite(quantos) && quantos > 0 && quantos !== casesNaHome) {
+        casesNaHome = quantos;
+        aplicarCases();
+      }
       const verTodos = q('#cases h2 + a');
       if (verTodos) {
         if (c.cases.verTodos && c.cases.verTodos.ativo === false) verTodos.style.display = 'none';
