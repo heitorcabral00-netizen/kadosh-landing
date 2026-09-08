@@ -607,11 +607,252 @@ montarCases(CASES);
     .then(doPainel => {
       if (!Array.isArray(doPainel) || doPainel.length === 0) return;
       montarCases(doPainel);
-      // estes cards nascem depois que a animação de entrada já passou por aqui,
-      // então entram já visíveis em vez de ficar presos no opacity 0
-      document.querySelectorAll('#lista-cases .reveal').forEach(el => el.classList.add('vis'));
+      // estes cards nascem depois que a animação de entrada já passou por aqui:
+      // sem entrar na fila do observador, ficariam presos no opacity 0
+      const revelar = window.revelar || (el => el.classList.add('vis'));
+      document.querySelectorAll('#lista-cases .reveal').forEach(revelar);
     })
     .catch(() => {});
+})();
+
+
+/* =====================================================================
+   CONTEÚDO VINDO DO PAINEL
+
+   Os textos abaixo continuam escritos no HTML acima — eles são o que o
+   visitante vê enquanto o painel não responde, e o que ele vê para sempre
+   se o painel estiver fora do ar. Quando o painel responde, este trecho
+   substitui o texto dos elementos que já existem.
+
+   De propósito, nada aqui cria ou remove estilo: procura o elemento pelo
+   seletor, troca o conteúdo e pronto. Nenhuma classe, nenhuma marcação e
+   nenhuma regra de CSS foram alteradas para isto funcionar — é o que
+   garante que o site não muda de aparência ao ligar o CMS.
+
+   `?previa=<token>` mostra o rascunho em vez do publicado.
+   ===================================================================== */
+(function(){
+  if (!PAINEL) return;
+
+  const q  = (s, raiz) => (raiz || document).querySelector(s);
+  const qa = (s, raiz) => [...(raiz || document).querySelectorAll(s)];
+
+  /* {preco} vem da configuração; **isto** vira negrito. Montado com nós de
+     texto em vez de innerHTML: conteúdo de campo nunca vira marcação. */
+  function escrever(el, texto, cfg, estiloNegrito){
+    if (!el || texto == null) return;
+    const pronto = String(texto).replace(/\{preco\}/g, cfg.precoMensal || '');
+    el.textContent = '';
+    pronto.split('**').forEach((parte, i) => {
+      if (!parte) return;
+      if (i % 2 === 1) {
+        const b = document.createElement('b');
+        b.textContent = parte;
+        if (estiloNegrito) b.setAttribute('style', estiloNegrito);
+        el.appendChild(b);
+      } else {
+        el.appendChild(document.createTextNode(parte));
+      }
+    });
+  }
+
+  const escreverEm = (sel, texto, cfg, estilo) => escrever(q(sel), texto, cfg, estilo);
+
+  /* "wa" abre o WhatsApp; o resto vai como está (âncora ou endereço). */
+  function destino(d, cfg){
+    if (d === 'wa') return 'https://wa.me/' + (cfg.whatsapp || KADOSH.whatsapp);
+    return d || '#';
+  }
+
+  function aplicarLink(el, link, cfg){
+    if (!el || !link) return;
+    escrever(el, link.texto, cfg);
+    el.setAttribute('href', destino(link.destino, cfg));
+    if (link.novaAba) { el.setAttribute('target', '_blank'); el.setAttribute('rel', 'noopener'); }
+    else { el.removeAttribute('target'); el.removeAttribute('rel'); }
+  }
+
+  /* Refaz uma lista clonando um item que já está na página: o clone traz as
+     classes e a estrutura originais, então o visual é o mesmo.
+
+     `seletorItem` existe porque nem todo container tem só itens dentro — o
+     das dúvidas começa com o <h2> da seção. Sem apontar qual é o item, o
+     molde vira o título e a lista inteira sai errada. */
+  function listar(container, itens, montar, seletorItem){
+    if (!container) return;
+    const antigos = qa(':scope > ' + seletorItem, container);
+    const molde = antigos[0];
+    if (!molde) return;
+    const ativos = (itens || []).filter(i => i && i.ativo !== false);
+    if (ativos.length === 0) return;
+
+    const novos = ativos.map(item => {
+      const el = molde.cloneNode(true);
+      montar(el, item);
+      return el;
+    });
+    molde.before(...novos);            // entram no lugar dos antigos
+    antigos.forEach(el => el.remove()); // e só então os antigos saem
+
+    /* entram na mesma animação de entrada dos blocos originais, com o mesmo
+       escalonamento — o clone herda o atraso do molde, que é sempre o do
+       primeiro item, então o atraso é recalculado aqui. */
+    const revelar = window.revelar || (el => el.classList.add('vis'));
+    novos.forEach((el, i) => {
+      el.style.transitionDelay = Math.min(i * 70, 350) + 'ms';
+      if (el.classList.contains('reveal')) revelar(el);
+      qa('.reveal', el).forEach(revelar);
+    });
+  }
+
+  function aplicar(c){
+    const cfg = c.config || {};
+
+    /* topo */
+    listar(q('header nav'), c.header && c.header.menu, (el, item) => aplicarLink(el, item, cfg), 'a');
+    aplicarLink(q('header .head-cta .btn'), c.header && c.header.botao, cfg);
+
+    /* abertura */
+    if (c.hero) {
+      escreverEm('#top .eyebrow', c.hero.eyebrow, cfg);
+      escreverEm('#top h1', c.hero.titulo, cfg);
+      escreverEm('#top > p', c.hero.texto, cfg);
+      const botoes = qa('#top .actions .btn');
+      aplicarLink(botoes[0], c.hero.botaoPrimario, cfg);
+      aplicarLink(botoes[1], c.hero.botaoSecundario, cfg);
+
+      /* Os selos têm posição própria no CSS (b-taxa / b-saldo), então aqui
+         só o texto muda: um selo a mais não teria onde se posicionar. */
+      const selos = qa('#top .badge-float');
+      (c.hero.selos || []).forEach((selo, i) => {
+        const alvo = selos[i];
+        if (!alvo) return;
+        if (selo.ativo === false) { alvo.style.display = 'none'; return; }
+        escrever(q('.rot', alvo), selo.rotulo, cfg);
+        escrever(q('.num', alvo), selo.numero, cfg);
+        escrever(q('.sub', alvo), selo.sub, cfg);
+      });
+      selos.slice((c.hero.selos || []).length).forEach(el => { el.style.display = 'none'; });
+    }
+
+    /* quatro frentes */
+    if (c.solucoes) {
+      escreverEm('#solucoes .eyebrow', c.solucoes.eyebrow, cfg);
+      escreverEm('#solucoes h2', c.solucoes.titulo, cfg);
+
+      // guarda os ícones desenhados no HTML antes de refazer os cards
+      const nomes = ['sacola', 'janela', 'camadas', 'escudo'];
+      const icones = {};
+      qa('#solucoes .card .ico').forEach((ico, i) => {
+        const copia = ico.cloneNode(true);
+        copia.removeAttribute('style');       // o dourado é do card em destaque
+        icones[nomes[i]] = copia;
+      });
+      const DOURADO = 'background:var(--accent);border-color:var(--accent);color:#0B0B0C';
+
+      listar(q('#solucoes .grid-4'), c.solucoes.cards, (el, card) => {
+        const antigo = q('.ico', el);
+        const novo = (icones[card.icone] || icones.escudo || antigo).cloneNode(true);
+        if (card.destaque) novo.setAttribute('style', DOURADO);
+        if (antigo) antigo.replaceWith(novo);
+        escrever(q('h3', el), card.titulo, cfg);
+        escrever(q('p', el), card.texto, cfg);
+      }, '.card');
+    }
+
+    /* carro-chefe */
+    if (c.delivery) {
+      escreverEm('#delivery .eyebrow', c.delivery.eyebrow, cfg);
+      escreverEm('#delivery h2', c.delivery.titulo, cfg);
+      escreverEm('#delivery p', c.delivery.texto, cfg);
+      listar(q('#delivery .feats'), c.delivery.features, (el, f) => {
+        const traco = q('i', el);            // o traço dourado é um <i> vazio
+        el.textContent = '';
+        if (traco) el.appendChild(traco);
+        el.appendChild(document.createTextNode(String(f.texto || '')));
+      }, '.feat');
+      aplicarLink(q('#delivery .btn-dark'), c.delivery.botao, cfg);
+      // o negrito do preço é mais escuro que o resto da frase, como no original
+      escreverEm('#delivery .btn-dark + span', c.delivery.notaPreco, cfg, 'color:var(--ink)');
+    }
+
+    /* como funciona */
+    if (c.como) {
+      escreverEm('#como .eyebrow', c.como.eyebrow, cfg);
+      escreverEm('#como h2', c.como.titulo, cfg);
+      listar(q('#como .steps'), c.como.passos, (el, p) => {
+        escrever(q('b', el), p.numero, cfg);
+        escrever(q('h3', el), p.titulo, cfg);
+        escrever(q('p', el), p.texto, cfg);
+      }, '.step');
+    }
+
+    /* cases (os cards em si vêm da outra tela do painel) */
+    if (c.cases) {
+      escreverEm('#cases h2', c.cases.titulo, cfg);
+      const verTodos = q('#cases h2 + a');
+      if (verTodos) {
+        if (c.cases.verTodos && c.cases.verTodos.ativo === false) verTodos.style.display = 'none';
+        else aplicarLink(verTodos, c.cases.verTodos, cfg);
+      }
+    }
+
+    /* dúvidas */
+    if (c.faq) {
+      escreverEm('#faq h2', c.faq.titulo, cfg);
+      listar(q('#faq .faq'), c.faq.perguntas, (el, item) => {
+        escrever(q('h3', el), item.pergunta, cfg);
+        escrever(q('p', el), item.resposta, cfg);
+      }, '.qa');
+    }
+
+    /* contato */
+    if (c.contato) {
+      escreverEm('#contato h2', c.contato.titulo, cfg);
+      const textos = qa('#contato .cta-copy p');
+      escrever(textos[0], c.contato.texto, cfg);
+      if (textos[1]) {
+        // este parágrafo tem o link do WhatsApp dentro: troca só a primeira linha
+        const primeiro = textos[1].firstChild;
+        if (primeiro && primeiro.nodeType === 3) primeiro.textContent = c.contato.textoAlternativo;
+      }
+      escrever(q('#contato [data-link="wa"]'), c.contato.linkWhatsapp, cfg);
+      escrever(q('#contato form h3'), c.contato.formTitulo, cfg);
+      escrever(q('#contato form button'), c.contato.formBotao, cfg);
+      escrever(q('#contato .legal'), c.contato.formLegal, cfg);
+    }
+
+    /* rodapé */
+    if (c.rodape) {
+      const cnpj = q('footer .logo + div');
+      escrever(cnpj, c.rodape.cnpj, cfg);
+      listar(q('footer .fcols'), c.rodape.colunas, (el, col) => {
+        const titulo = q('b', el);
+        qa('a', el).forEach(a => a.remove());
+        escrever(titulo, col.titulo, cfg);
+        (col.links || []).forEach(link => {
+          const a = document.createElement('a');
+          aplicarLink(a, link, cfg);
+          el.appendChild(a);
+        });
+      }, '.fcol');
+    }
+
+    /* o número do WhatsApp também vale para os botões montados no início */
+    if (cfg.whatsapp) {
+      qa('[data-link="wa"]').forEach(a => { a.href = 'https://wa.me/' + cfg.whatsapp; });
+    }
+  }
+
+  const previa = new URLSearchParams(location.search).get('previa');
+  const endereco = PAINEL + '/api/landing/conteudo' + (previa ? '?previa=' + encodeURIComponent(previa) : '');
+  const limite = (typeof AbortSignal !== 'undefined' && AbortSignal.timeout)
+    ? { signal: AbortSignal.timeout(8000) } : {};
+
+  fetch(endereco, limite)
+    .then(r => r.ok ? r.json() : Promise.reject(new Error('painel respondeu ' + r.status)))
+    .then(aplicar)
+    .catch(() => {});   // sem painel, fica o que está escrito no HTML
 })();
 
 
@@ -676,6 +917,8 @@ document.querySelectorAll('[data-mail-text]').forEach(a => a.textContent = KADOS
 
   if (!suave || !('IntersectionObserver' in window)) {
     alvos.forEach(el => el.classList.add('vis'));
+    // conteúdo que chega depois, do painel, também precisa aparecer
+    window.revelar = el => el.classList.add('vis');
     return;
   }
 
@@ -697,6 +940,11 @@ document.querySelectorAll('[data-mail-text]').forEach(a => a.textContent = KADOS
   }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
 
   alvos.forEach(el => observador.observe(el));
+
+  /* Blocos montados depois — os cases e o conteúdo que vem do painel —
+     entram na mesma fila. Sem isto eles ou apareceriam de estalo, sem a
+     animação dos vizinhos, ou ficariam presos invisíveis. */
+  window.revelar = el => observador.observe(el);
 })();
 
 /* parallax: cada camada do mockup segue o mouse numa velocidade,
