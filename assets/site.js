@@ -47,7 +47,7 @@ const CASES = [
 
 /* Endereço do painel (kadosh-sites). É de lá que vêm os cases cadastrados.
    Deixe vazio para o site usar só a lista de cima e não chamar ninguém. */
-const PAINEL = "https://kadosh-sites.onrender.com";
+const PAINEL = "https://sistema.kadoshsistemas.com.br";
 
 /**
  * Faz um bloco recém-inserido aparecer.
@@ -409,7 +409,7 @@ montarCases(NA_HOME ? CASES.slice(0, casesNaHome) : CASES);
   ];
 
   const ORIGENS_CONFIAVEIS = [
-    'https://kadosh-sites.onrender.com',
+    'https://sistema.kadoshsistemas.com.br',
     'http://localhost:3000',
   ];
 

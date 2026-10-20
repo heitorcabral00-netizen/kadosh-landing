@@ -5,3 +5,5 @@ demo.html
 Thumbs.db
 desktop.ini
 .DS_Store
+
+.wrangler/
