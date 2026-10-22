@@ -167,6 +167,9 @@
      centralizada — 4 ou 5 cases não deixam buraco na direita. */
   .cases-grid{display:flex;flex-wrap:wrap;gap:20px;justify-content:center}
   .cases-grid>.case{flex:0 1 calc((100% - 40px)/3);min-width:0}
+  /* na página inicial: 4 cases lado a lado; 2 por linha em tela média */
+  .casos-home .cases-grid>.case{flex-basis:calc((100% - 60px)/4)}
+  @media (max-width:1180px){ .casos-home .cases-grid>.case{flex-basis:calc((100% - 20px)/2)} }
 
   /* quote */
 
@@ -219,7 +222,7 @@
     .mb-kpis{grid-template-columns:1fr 1fr}
     .mock-phone,.badge-float{display:none}
       .grid-4,.grid-3,.steps,.delivery,.feats,.lead-row{grid-template-columns:1fr}
-    .cases-grid>.case{flex-basis:100%}
+    .cases-grid>.case,.casos-home .cases-grid>.case{flex-basis:100%}
     .lead{padding:22px}
     .delivery{padding:36px 24px;gap:36px}
     .screens{gap:14px}
