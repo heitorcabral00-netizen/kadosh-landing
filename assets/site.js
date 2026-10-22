@@ -234,7 +234,7 @@ montarCases(NA_HOME ? CASES.slice(0, casesNaHome) : CASES);
        escalonamento — o clone herda o atraso do molde, que é sempre o do
        primeiro item, então o atraso é recalculado aqui. */
     novos.forEach((el, i) => {
-      el.style.transitionDelay = Math.min(i * 70, 350) + 'ms';
+      el.style.transitionDelay = Math.min(i * 40, 120) + 'ms';
       if (el.classList.contains('reveal')) revelarBloco(el);
       qa('.reveal', el).forEach(revelarBloco);
     });
@@ -281,7 +281,7 @@ montarCases(NA_HOME ? CASES.slice(0, casesNaHome) : CASES);
       qa('#solucoes .card .ico').forEach((ico, i) => {
         const copia = ico.cloneNode(true);
         copia.removeAttribute('style');       // o dourado é do card em destaque
-        icones[nomes[i]] = copia;
+        icones[ico.dataset.icone || nomes[i]] = copia;  // pelo nome: a faixa não tem mais o card do delivery
       });
       const DOURADO = 'background:var(--accent);border-color:var(--accent);color:#0B0B0C';
 
@@ -568,7 +568,7 @@ document.querySelectorAll('[data-mail-text]').forEach(a => a.textContent = KADOS
   alvos.forEach(el => {
     const pai = el.parentElement;
     const i = contagem.get(pai) || 0;
-    el.style.transitionDelay = Math.min(i * 70, 350) + 'ms';
+    el.style.transitionDelay = Math.min(i * 40, 120) + 'ms';
     contagem.set(pai, i + 1);
   });
 
@@ -578,7 +578,7 @@ document.querySelectorAll('[data-mail-text]').forEach(a => a.textContent = KADOS
       e.target.classList.add('vis');
       observador.unobserve(e.target);   // revela uma vez só
     });
-  }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
+  }, { rootMargin: '0px 0px 25% 0px', threshold: 0 });
 
   alvos.forEach(el => observador.observe(el));
 

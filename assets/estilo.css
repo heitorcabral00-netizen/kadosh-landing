@@ -241,8 +241,8 @@
   }
 
   /* revelação no scroll — só entra em ação com JS ligado (html.anim) */
-  html.anim .reveal{opacity:0;transform:translateY(22px);
-    transition:opacity .7s ease-out, transform .7s cubic-bezier(.22,.61,.36,1)}
+  html.anim .reveal{opacity:0;transform:translateY(12px);
+    transition:opacity .35s ease-out, transform .35s ease-out}
   html.anim .reveal.vis{opacity:1;transform:none}
   @media (prefers-reduced-motion: reduce){
     .case,.case .shot img{transition:none}
