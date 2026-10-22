@@ -526,7 +526,7 @@ document.querySelectorAll('[data-mail-text]').forEach(a => a.textContent = KADOS
 /* clicar num print do sistema abre ele inteiro (o do site fica pequeno demais
    para ler). Fecha clicando fora, no botão, ou com Esc. */
 (function(){
-  const prints = document.querySelectorAll('.mock-phone img, .device img, .mb-body img');
+  const prints = document.querySelectorAll('.mock-phone img, .device img, .mb-body img, .vitrine-quadro img');
   if (!prints.length) return;
 
   const caixa = document.createElement('div');
@@ -789,4 +789,27 @@ document.getElementById('form-lead')?.addEventListener('submit', async e => {
   venda.addEventListener('input', calcular);
   taxa.addEventListener('input', calcular);
   caixa.addEventListener('preco', calcular);
+})();
+
+
+/* telas do painel: cada aba troca a imagem e a legenda */
+(function(){
+  const vitrine = document.querySelector('.vitrine');
+  if (!vitrine) return;
+  const img = vitrine.querySelector('.vitrine-quadro img');
+  const legenda = vitrine.querySelector('.vitrine-legenda');
+  const abas = [...vitrine.querySelectorAll('.vitrine-abas button')];
+  abas.forEach(b => b.addEventListener('click', () => {
+    abas.forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
+    img.src = b.dataset.src;
+    img.alt = 'Painel Kadosh: ' + b.textContent.trim().toLowerCase();
+    legenda.textContent = b.dataset.legenda;
+    b.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }));
+  // carrega as outras telas antes do clique, quando a seção chega perto da tela
+  const pre = () => abas.forEach(b => { const i = new Image(); i.src = b.dataset.src; });
+  if ('IntersectionObserver' in window) {
+    const o = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { pre(); o.disconnect(); } }, { rootMargin: '400px' });
+    o.observe(vitrine);
+  } else pre();
 })();

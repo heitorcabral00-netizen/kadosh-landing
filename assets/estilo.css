@@ -116,6 +116,20 @@
 
   /* delivery */
   .delivery>*{min-width:0}
+  /* telas do painel */
+  .vitrine{display:flex;flex-direction:column;gap:18px}
+  .vitrine-abas{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+  .vitrine-abas::-webkit-scrollbar{display:none}
+  .vitrine-abas button{font-family:inherit;font-size:14px;font-weight:600;white-space:nowrap;padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink-soft);cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+  .vitrine-abas button:hover{color:var(--ink);border-color:#D6D6CE}
+  .vitrine-abas button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+  .vitrine-quadro{border-radius:16px;overflow:hidden;border:1px solid #26262A;background:#141418;box-shadow:0 30px 60px -28px rgba(0,0,0,.45)}
+  .vitrine-barra{display:flex;align-items:center;gap:7px;padding:11px 14px}
+  .vitrine-barra span{width:10px;height:10px;border-radius:50%;background:#3A3A3F}
+  .vitrine-barra span:nth-child(1){background:#FF5F57}.vitrine-barra span:nth-child(2){background:#FEBC2E}.vitrine-barra span:nth-child(3){background:#28C840}
+  .vitrine-barra em{font-style:normal;margin:0 auto;font-family:'JetBrains Mono',monospace;font-size:11px;color:#8B8B84;background:#0F0F12;padding:5px 18px;border-radius:6px}
+  .vitrine-quadro img{display:block;width:100%;height:auto;background:#fff}
+  .vitrine-legenda{font-size:15px;line-height:1.7;color:var(--ink-soft);margin:0;min-height:1.7em}
   /* calculadora de comissão */
   .calc{background:var(--sand);border-radius:24px;padding:48px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:stretch}
   .calc h2{font-size:34px;line-height:1.15;margin:0}
