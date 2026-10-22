@@ -137,7 +137,7 @@ function aplicarCases(){
 /* Espera o painel um instante antes de mostrar a lista reserva: mostrar a reserva e
    trocar logo em seguida fazia os cards piscarem a cada carga. */
 const liberarReserva = () => { if (reservaLiberada) return; reservaLiberada = true; aplicarCases(); };
-const esperaReserva = setTimeout(liberarReserva, PAINEL ? 1200 : 0);
+const esperaReserva = setTimeout(liberarReserva, PAINEL ? 3000 : 0);
 
 (function(){
   if (!PAINEL) return;
