@@ -690,41 +690,42 @@ document.getElementById('form-lead')?.addEventListener('submit', async e => {
 });
 
 
-/* menu: acende o item da seção que está na tela. Os links são relidos a cada vez porque o
-   conteúdo do painel refaz o menu depois de carregar. */
+/* menu: acende o item da seção que está na tela, na mesma ordem da página. Só mexe quando a
+   seção muda; os links são relidos porque o conteúdo do painel refaz o menu depois de carregar. */
 (function(){
   const nav = document.querySelector('header nav');
   if (!nav) return;
-  const destinoDe = { top: '/', cases: '/cases', delivery: '#delivery', operacao: '#operacao', como: '#como', faq: '#faq' };
+  const destinoDe = { top: '/', cases: '#cases', delivery: '#delivery', operacao: '#operacao', como: '#como', faq: '#faq' };
   const secoes = Object.keys(destinoDe).map(id => document.getElementById(id)).filter(Boolean);
-  const alvoDoLink = a => {
-    const h = a.getAttribute('href') || '';
-    return h.replace(/^\/(?=#)/, '');
-  };
-  let ultimo = null;
-  function acender(){
-    let destino;
-    if (!NA_HOME) destino = location.pathname.replace(/\/$/, '') === '/cases' ? '/cases' : null;
+  // "/#cases" e "/cases" (página de cases) contam como Cases
+  const alvoDoLink = a => (a.getAttribute('href') || '').replace(/^\/(?=#)/, '').replace(/^\/cases\/?$/, '#cases');
+  let atual;
+  function acender(forcar){
+    let destino = null;
+    if (!NA_HOME) destino = /^\/cases\/?$/.test(location.pathname) ? '#cases' : null;
     else {
       const linha = window.innerHeight * 0.35;
-      let atual = null;
-      secoes.forEach(s => { if (s.getBoundingClientRect().top <= linha) atual = s; });
-      destino = atual ? destinoDe[atual.id] : '/';
+      let sec = null;
+      for (const s of secoes) { if (s.getBoundingClientRect().top <= linha) sec = s; else break; }
+      destino = sec ? destinoDe[sec.id] : '/';
     }
-    const links = [...nav.querySelectorAll('a')];
-    links.forEach(a => a.classList.toggle('on', destino !== null && alvoDoLink(a) === destino));
-    const aceso = links.find(a => a.classList.contains('on'));
-    if (aceso && aceso !== ultimo && nav.scrollWidth > nav.clientWidth) {
-      nav.scrollTo({ left: aceso.offsetLeft - (nav.clientWidth - aceso.offsetWidth) / 2, behavior: 'smooth' });
-    }
-    ultimo = aceso || null;
+    if (destino === atual && !forcar) return;
+    atual = destino;
+    let aceso = null;
+    nav.querySelectorAll('a').forEach(a => {
+      const on = destino !== null && alvoDoLink(a) === destino;
+      a.classList.toggle('on', on);
+      if (on) aceso = a;
+    });
+    // celular: a cápsula rola para o item aceso aparecer (sem animação, para não brigar com a rolagem da página)
+    if (aceso && nav.scrollWidth > nav.clientWidth) nav.scrollLeft = aceso.offsetLeft - (nav.clientWidth - aceso.offsetWidth) / 2;
   }
   let pedido = false;
   window.addEventListener('scroll', () => {
     if (pedido) return;
     pedido = true;
-    requestAnimationFrame(() => { pedido = false; acender(); });
+    requestAnimationFrame(() => { pedido = false; acender(false); });
   }, { passive: true });
-  new MutationObserver(acender).observe(nav, { childList: true });
-  acender();
+  new MutationObserver(() => acender(true)).observe(nav, { childList: true });
+  acender(true);
 })();
