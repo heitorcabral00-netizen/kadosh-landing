@@ -33,6 +33,20 @@
 </head>
 <body>
 <script>document.documentElement.classList.add('anim')</script>
+<script>
+/* Recarregar volta para o início: sem isto o navegador devolve a rolagem anterior ou pula para o
+   #trecho do endereço. Link de outra página para uma seção (/#delivery) continua funcionando. */
+(function(){
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  var n = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+  if (n && n.type === 'reload') {
+    if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+    var topo = function(){ window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); };
+    topo(); document.addEventListener('DOMContentLoaded', topo); window.addEventListener('load', topo);
+  }
+})();
+</script>
+
 
 <header>
   <a class="logo" href="/"><span class="mark">k</span><span class="word">kadosh<i class="quad"></i></span></a>
