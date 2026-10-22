@@ -688,3 +688,43 @@ document.getElementById('form-lead')?.addEventListener('submit', async e => {
     paraWhats();
   }
 });
+
+
+/* menu: acende o item da seção que está na tela. Os links são relidos a cada vez porque o
+   conteúdo do painel refaz o menu depois de carregar. */
+(function(){
+  const nav = document.querySelector('header nav');
+  if (!nav) return;
+  const destinoDe = { top: '/', cases: '/cases', delivery: '#delivery', operacao: '#operacao', como: '#como', faq: '#faq' };
+  const secoes = Object.keys(destinoDe).map(id => document.getElementById(id)).filter(Boolean);
+  const alvoDoLink = a => {
+    const h = a.getAttribute('href') || '';
+    return h.replace(/^\/(?=#)/, '');
+  };
+  let ultimo = null;
+  function acender(){
+    let destino;
+    if (!NA_HOME) destino = location.pathname.replace(/\/$/, '') === '/cases' ? '/cases' : null;
+    else {
+      const linha = window.innerHeight * 0.35;
+      let atual = null;
+      secoes.forEach(s => { if (s.getBoundingClientRect().top <= linha) atual = s; });
+      destino = atual ? destinoDe[atual.id] : '/';
+    }
+    const links = [...nav.querySelectorAll('a')];
+    links.forEach(a => a.classList.toggle('on', destino !== null && alvoDoLink(a) === destino));
+    const aceso = links.find(a => a.classList.contains('on'));
+    if (aceso && aceso !== ultimo && nav.scrollWidth > nav.clientWidth) {
+      nav.scrollTo({ left: aceso.offsetLeft - (nav.clientWidth - aceso.offsetWidth) / 2, behavior: 'smooth' });
+    }
+    ultimo = aceso || null;
+  }
+  let pedido = false;
+  window.addEventListener('scroll', () => {
+    if (pedido) return;
+    pedido = true;
+    requestAnimationFrame(() => { pedido = false; acender(); });
+  }, { passive: true });
+  new MutationObserver(acender).observe(nav, { childList: true });
+  acender();
+})();
