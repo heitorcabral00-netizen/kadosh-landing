@@ -256,6 +256,9 @@ const esperaReserva = setTimeout(liberarReserva, PAINEL ? 3000 : 0);
 
   function aplicar(c){
     const cfg = c.config || {};
+    // preço da mensalidade usado na calculadora vem do painel
+    const calcEl = document.querySelector('.calc');
+    if (calcEl && cfg.precoMensal) { calcEl.dataset.preco = cfg.precoMensal; calcEl.dispatchEvent(new Event('preco')); }
 
     /* topo */
     listar(q('header nav'), c.header && c.header.menu, (el, item) => aplicarLink(el, item, cfg), 'a');
@@ -745,4 +748,45 @@ document.getElementById('form-lead')?.addEventListener('submit', async e => {
   }, { passive: true });
   new MutationObserver(() => acender(true)).observe(nav, { childList: true, subtree: true, attributes: true, attributeFilter: ['href'] });
   acender(true);
+})();
+
+
+/* calculadora: quanto o iFood leva por mês e por ano. Começa zerada; a conta só aparece
+   com os dois campos preenchidos. Valores em reais aceitam "15.000", "15000" ou "15.000,50". */
+(function(){
+  const caixa = document.querySelector('.calc');
+  if (!caixa) return;
+  const venda = document.getElementById('calc-venda');
+  const taxa = document.getElementById('calc-taxa');
+  const vazio = caixa.querySelector('.calc-vazio');
+  const conta = caixa.querySelector('.calc-conta');
+  const numero = (t) => {
+    const limpo = String(t || '').replace(/[^0-9,.]/g, '');
+    if (!limpo) return NaN;
+    return Number(limpo.includes(',') ? limpo.replace(/\./g, '').replace(',', '.') : limpo.replace(/\.(?=\d{3}(\D|$))/g, ''));
+  };
+  const reais = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+  function calcular(){
+    const v = numero(venda.value), t = numero(taxa.value);
+    const ok = v > 0 && t > 0 && t < 100;
+    vazio.hidden = ok; conta.hidden = !ok;
+    if (!ok) return;
+    const mes = v * t / 100;
+    const preco = Number(String(caixa.dataset.preco || '').replace(',', '.'));
+    caixa.querySelector('.calc-mes').textContent = reais(mes);
+    caixa.querySelector('.calc-ano').textContent = reais(mes * 12);
+    const vezes = preco > 0 ? Math.floor(mes / preco) : 0;
+    const paga = caixa.querySelector('.calc-paga');
+    paga.textContent = '';
+    if (vezes >= 1) {
+      paga.append('Só a comissão de um mês paga ');
+      const b = document.createElement('b'); b.textContent = vezes === 1 ? '1 mensalidade da Kadosh' : vezes + ' mensalidades da Kadosh';
+      paga.append(b, ' (a partir de ' + reais(preco) + '/mês). No canal próprio, a comissão por pedido é zero.');
+    } else {
+      paga.append('No canal próprio da Kadosh, a comissão por pedido é zero.');
+    }
+  }
+  venda.addEventListener('input', calcular);
+  taxa.addEventListener('input', calcular);
+  caixa.addEventListener('preco', calcular);
 })();

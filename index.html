@@ -99,7 +99,36 @@
 </section>
 
 
-<section class="wrap casos-home" id="cases" style="padding-top:96px;padding-bottom:40px">
+<section class="wrap" id="calculadora" style="padding-top:96px">
+  <div class="calc reveal" data-preco="179">
+    <div class="calc-campos">
+      <h2>Quanto o iFood leva do seu delivery?</h2>
+      <p>Coloque o que você vende por mês no aplicativo e a taxa que ele cobra. A conta aparece na hora.</p>
+      <div class="field">
+        <label for="calc-venda">Quanto você vende por mês no iFood</label>
+        <input id="calc-venda" inputmode="decimal" autocomplete="off" placeholder="R$ por mês">
+      </div>
+      <div class="field">
+        <label for="calc-taxa">Taxa total do iFood</label>
+        <input id="calc-taxa" inputmode="decimal" autocomplete="off" placeholder="% sobre cada venda">
+        <small>Some a comissão e a taxa de pagamento, como aparecem no extrato do iFood.</small>
+      </div>
+    </div>
+    <div class="calc-resultado" aria-live="polite">
+      <p class="calc-vazio">Preencha os dois campos para ver quanto vai para o aplicativo.</p>
+      <div class="calc-conta" hidden>
+        <span class="calc-rot">Por mês, o iFood fica com</span>
+        <strong class="calc-mes"></strong>
+        <span class="calc-rot">Em 12 meses</span>
+        <strong class="calc-ano"></strong>
+        <p class="calc-paga"></p>
+        <a class="btn btn-dark" href="#contato">Quero vender sem comissão</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap casos-home" id="cases" style="padding-top:80px;padding-bottom:40px">
   <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:26px">
     <h2>Quem já vende com a Kadosh</h2>
     <a href="/cases" style="font-size:14px;font-weight:600;color:var(--accent)">Ver todos</a>

@@ -116,6 +116,22 @@
 
   /* delivery */
   .delivery>*{min-width:0}
+  /* calculadora de comissão */
+  .calc{background:var(--sand);border-radius:24px;padding:48px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:stretch}
+  .calc h2{font-size:34px;line-height:1.15;margin:0}
+  .calc-campos{display:flex;flex-direction:column;gap:18px}
+  .calc-campos>p{font-size:15px;line-height:1.7;color:var(--ink-soft);margin:0}
+  .calc .field small{font-size:12px;line-height:1.5;color:#8B8B84}
+  .calc-resultado{background:#fff;border:1px solid var(--line);border-radius:18px;padding:32px;display:flex;flex-direction:column;justify-content:center}
+  .calc-vazio{font-size:15px;line-height:1.7;color:#8B8B84;margin:0;text-align:center}
+  .calc-conta{display:flex;flex-direction:column;gap:6px}
+  .calc-conta[hidden]{display:none}
+  .calc-rot{font-size:13px;font-weight:700;color:var(--ink-soft)}
+  .calc-mes{font-size:44px;line-height:1.1;font-weight:800;letter-spacing:-.03em;color:#C0392B;margin-bottom:12px}
+  .calc-ano{font-size:28px;line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+  .calc-paga{font-size:15px;line-height:1.7;color:var(--ink-soft);margin:16px 0 18px;padding-top:16px;border-top:1px solid var(--line)}
+  .calc-paga b{color:var(--ink)}
+  .calc .btn{align-self:flex-start}
   .delivery{background:var(--sand);border-radius:24px;padding:56px 48px;display:grid;grid-template-columns:0.85fr 1.15fr;gap:48px;align-items:center}
   .delivery h2{font-size:40px;line-height:1.1}
   .delivery p{font-size:15px;line-height:1.75;color:var(--ink-soft)}
@@ -221,7 +237,10 @@
     .mb-side{display:none}
     .mb-kpis{grid-template-columns:1fr 1fr}
     .mock-phone,.badge-float{display:none}
-      .grid-4,.grid-3,.steps,.delivery,.feats,.lead-row{grid-template-columns:1fr}
+      .grid-4,.grid-3,.steps,.delivery,.feats,.lead-row,.calc{grid-template-columns:1fr}
+      .calc{padding:32px 22px;gap:24px}
+      .calc h2{font-size:28px}
+      .calc-mes{font-size:36px}
     .cases-grid>.case,.casos-home .cases-grid>.case{flex-basis:100%}
     .lead{padding:22px}
     .delivery{padding:36px 24px;gap:36px}
