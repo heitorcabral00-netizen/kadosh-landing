@@ -66,9 +66,13 @@ function revelarBloco(el){
 
 /* monta os cards de case. Roda antes da animação de entrada mais abaixo,
    senão os cards nasceriam invisíveis. */
+let casesNaTela = '';
 function montarCases(lista){
   const alvo = document.getElementById('lista-cases');
   if (!alvo) return;
+  const assinatura = JSON.stringify(lista.map(c => [c.nome, c.foto, c.texto, c.categoria || '']));
+  if (assinatura === casesNaTela) return;   // mesma lista: não recria (evitava piscar)
+  casesNaTela = assinatura;
   alvo.innerHTML = '';
 
   lista.forEach(c => {
@@ -115,9 +119,11 @@ const NA_HOME = location.pathname === '/' || /\/index\.html$/.test(location.path
    pode chegar antes ou depois da lista de cases. Por isso as duas coisas são
    guardadas e a vitrine é remontada quando qualquer uma das duas muda. */
 let casesDoPainel = null;
-let casesNaHome = 3;
+let casesNaHome = 4;
 
+let reservaLiberada = false;
 function aplicarCases(){
+  if (!casesDoPainel && !reservaLiberada) return;
   const lista = casesDoPainel || CASES;
   montarCases(NA_HOME ? lista.slice(0, casesNaHome) : lista);
   // cards montados depois da animação de entrada precisam ser revelados
@@ -128,7 +134,10 @@ function aplicarCases(){
    Em seguida, se o painel responder, ela é trocada pelo que estiver
    cadastrado lá. É por isso que a vitrine nunca fica vazia: painel fora do
    ar, internet ruim ou domínio trocado só significam "fica a lista de cima". */
-montarCases(NA_HOME ? CASES.slice(0, casesNaHome) : CASES);
+/* Espera o painel um instante antes de mostrar a lista reserva: mostrar a reserva e
+   trocar logo em seguida fazia os cards piscarem a cada carga. */
+const liberarReserva = () => { if (reservaLiberada) return; reservaLiberada = true; aplicarCases(); };
+const esperaReserva = setTimeout(liberarReserva, PAINEL ? 1200 : 0);
 
 (function(){
   if (!PAINEL) return;
@@ -140,11 +149,12 @@ montarCases(NA_HOME ? CASES.slice(0, casesNaHome) : CASES);
   fetch(PAINEL + '/api/landing/cases', limite)
     .then(r => r.ok ? r.json() : Promise.reject(new Error('painel respondeu ' + r.status)))
     .then(doPainel => {
-      if (!Array.isArray(doPainel) || doPainel.length === 0) return;
+      if (!Array.isArray(doPainel) || doPainel.length === 0) return liberarReserva();
+      clearTimeout(esperaReserva);
       casesDoPainel = doPainel;
       aplicarCases();
     })
-    .catch(() => {});
+    .catch(liberarReserva);
 })();
 
 
@@ -174,6 +184,7 @@ montarCases(NA_HOME ? CASES.slice(0, casesNaHome) : CASES);
   function escrever(el, texto, cfg, estiloNegrito){
     if (!el || texto == null) return;
     const pronto = String(texto).replace(/\{preco\}/g, cfg.precoMensal || '');
+    if (!pronto.includes('**') && el.textContent === pronto && !el.children.length) return;
     el.textContent = '';
     pronto.split('**').forEach((parte, i) => {
       if (!parte) return;
@@ -222,22 +233,25 @@ montarCases(NA_HOME ? CASES.slice(0, casesNaHome) : CASES);
     const ativos = (itens || []).filter(i => i && i.ativo !== false);
     if (ativos.length === 0) return;
 
-    const novos = ativos.map(item => {
-      const el = molde.cloneNode(true);
+    /* Atualiza no lugar os itens que já estão na página e só clona os que faltam.
+       Recriar tudo fazia a lista piscar a cada carga: o clone nasce sem o destaque
+       do menu e com a animação de entrada zerada. */
+    ativos.forEach((item, i) => {
+      let el = antigos[i];
+      if (!el) {
+        el = molde.cloneNode(true);
+        el.classList.remove('on', 'vis');
+        el.style.transitionDelay = Math.min(i * 40, 120) + 'ms';
+        (antigos[i - 1] || qa(':scope > ' + seletorItem, container).pop()).after(el);
+        antigos[i] = el;
+        montar(el, item);
+        if (el.classList.contains('reveal')) revelarBloco(el);
+        qa('.reveal', el).forEach(revelarBloco);
+        return;
+      }
       montar(el, item);
-      return el;
     });
-    molde.before(...novos);            // entram no lugar dos antigos
-    antigos.forEach(el => el.remove()); // e só então os antigos saem
-
-    /* entram na mesma animação de entrada dos blocos originais, com o mesmo
-       escalonamento — o clone herda o atraso do molde, que é sempre o do
-       primeiro item, então o atraso é recalculado aqui. */
-    novos.forEach((el, i) => {
-      el.style.transitionDelay = Math.min(i * 40, 120) + 'ms';
-      if (el.classList.contains('reveal')) revelarBloco(el);
-      qa('.reveal', el).forEach(revelarBloco);
-    });
+    antigos.slice(ativos.length).forEach(el => el.remove());
   }
 
   function aplicar(c){
@@ -287,9 +301,12 @@ montarCases(NA_HOME ? CASES.slice(0, casesNaHome) : CASES);
 
       listar(q('#solucoes .grid-4'), c.solucoes.cards, (el, card) => {
         const antigo = q('.ico', el);
-        const novo = (icones[card.icone] || icones.escudo || antigo).cloneNode(true);
-        if (card.destaque) novo.setAttribute('style', DOURADO);
-        if (antigo) antigo.replaceWith(novo);
+        const mesmo = antigo && antigo.dataset.icone === card.icone && !!antigo.getAttribute('style') === !!card.destaque;
+        if (!mesmo) {
+          const novo = (icones[card.icone] || icones.escudo || antigo).cloneNode(true);
+          if (card.destaque) novo.setAttribute('style', DOURADO);
+          if (antigo) antigo.replaceWith(novo);
+        }
         escrever(q('h3', el), card.titulo, cfg);
         escrever(q('p', el), card.texto, cfg);
       }, '.card');
@@ -726,6 +743,6 @@ document.getElementById('form-lead')?.addEventListener('submit', async e => {
     pedido = true;
     requestAnimationFrame(() => { pedido = false; acender(false); });
   }, { passive: true });
-  new MutationObserver(() => acender(true)).observe(nav, { childList: true });
+  new MutationObserver(() => acender(true)).observe(nav, { childList: true, subtree: true, attributes: true, attributeFilter: ['href'] });
   acender(true);
 })();
