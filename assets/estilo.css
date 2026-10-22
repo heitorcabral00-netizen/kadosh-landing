@@ -130,6 +130,7 @@
   .vitrine-barra em{font-style:normal;margin:0 auto;font-family:'JetBrains Mono',monospace;font-size:11px;color:#8B8B84;background:#0F0F12;padding:5px 18px;border-radius:6px}
   .vitrine-quadro img{display:block;width:100%;height:auto;background:#fff}
   .vitrine-legenda{font-size:15px;line-height:1.7;color:var(--ink-soft);margin:0;min-height:1.7em}
+  .hero-cel{display:none}
   /* calculadora de comissão */
   .calc{background:var(--sand);border-radius:24px;padding:48px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:stretch}
   .calc h2{font-size:34px;line-height:1.15;margin:0}
@@ -320,6 +321,21 @@
     #operacao .card h3{font-size:18px}
     #operacao .card p{font-size:14px;line-height:1.65}
     .step{padding:20px 22px;gap:6px}
+    header{padding:12px 18px;gap:10px}
+    .head-cta .btn{padding:9px 14px;font-size:13px}
+    nav a{padding:6px 11px}
+    .hero{padding:36px 22px 0;gap:18px}
+    .hero h1{font-size:34px;line-height:1.08}
+    .hero p{font-size:15px;line-height:1.6}
+    .hero .actions{flex-direction:column;align-self:stretch;gap:10px;padding-top:4px}
+    .hero .actions .btn{width:100%;text-align:center;padding:15px 20px}
+    .hero-stage{display:none}
+    .hero-cel{display:block;position:relative;width:236px;margin:14px auto 0;height:330px;overflow:hidden}
+    .hero-cel .device{width:236px;padding:9px;border-radius:40px}
+    .hero-cel .device .screen{border-radius:31px}
+    .hero-cel-selo{position:absolute;right:-6px;top:46px;background:var(--accent);color:#0B0B0C;border-radius:12px;padding:9px 12px;display:flex;flex-direction:column;gap:2px;text-align:left;box-shadow:0 14px 30px -10px rgba(0,0,0,.6)}
+    .hero-cel-selo span{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.12em}
+    .hero-cel-selo b{font-size:20px;font-weight:800;letter-spacing:-.02em}
     .vitrine-quadro{max-width:290px;width:100%;margin:0 auto;border-radius:36px;padding:9px;border-color:#2A2A2F;background:#1A1A1E}
     .vitrine-barra{display:none}
     .vitrine-quadro img{border-radius:28px}
