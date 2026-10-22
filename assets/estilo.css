@@ -303,3 +303,26 @@
   @media (prefers-reduced-motion: reduce){
     .lightbox,.lightbox img{transition:none}
   }
+
+
+  /* celular: menos rolagem. Cases e módulos deslizam para o lado (o próximo aparece na borda),
+     cartões e etapas mais compactos, telas do painel na moldura de celular. */
+  @media (max-width:640px){
+    section.wrap{padding-top:52px!important;padding-bottom:52px!important}
+    #cases>div:first-child{flex-wrap:wrap;gap:6px 16px;align-items:center!important}
+    #cases>div:first-child a{white-space:nowrap}
+    .casos-home .cases-grid,#operacao .grid-3{display:flex;flex-wrap:nowrap;justify-content:flex-start;gap:12px;overflow-x:auto;
+      scroll-snap-type:x mandatory;scroll-padding-inline:24px;margin-inline:-24px;padding:4px 24px 14px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+    .casos-home .cases-grid::-webkit-scrollbar,#operacao .grid-3::-webkit-scrollbar{display:none}
+    .casos-home .cases-grid>.case,#operacao .grid-3>.card{flex:0 0 82%;scroll-snap-align:start}
+    html.anim .casos-home .reveal,html.anim #operacao .grid-3 .reveal{opacity:1;transform:none}
+    #operacao .card{padding:24px 22px;gap:10px}
+    #operacao .card h3{font-size:18px}
+    #operacao .card p{font-size:14px;line-height:1.65}
+    .step{padding:20px 22px;gap:6px}
+    .vitrine-quadro{max-width:290px;width:100%;margin:0 auto;border-radius:36px;padding:9px;border-color:#2A2A2F;background:#1A1A1E}
+    .vitrine-barra{display:none}
+    .vitrine-quadro img{border-radius:28px}
+    .vitrine-legenda{text-align:center}
+    .calc{gap:20px}
+  }

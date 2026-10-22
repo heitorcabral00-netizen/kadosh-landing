@@ -801,13 +801,16 @@ document.getElementById('form-lead')?.addEventListener('submit', async e => {
   const abas = [...vitrine.querySelectorAll('.vitrine-abas button')];
   abas.forEach(b => b.addEventListener('click', () => {
     abas.forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
+    const fonte = vitrine.querySelector('.vitrine-quadro source');
+    if (fonte && b.dataset.srcCel) fonte.srcset = b.dataset.srcCel;
     img.src = b.dataset.src;
     img.alt = 'Painel Kadosh: ' + b.textContent.trim().toLowerCase();
     legenda.textContent = b.dataset.legenda;
     b.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }));
   // carrega as outras telas antes do clique, quando a seção chega perto da tela
-  const pre = () => abas.forEach(b => { const i = new Image(); i.src = b.dataset.src; });
+  const celular = matchMedia('(max-width:640px)').matches;
+  const pre = () => abas.forEach(b => { const i = new Image(); i.src = celular && b.dataset.srcCel ? b.dataset.srcCel : b.dataset.src; });
   if ('IntersectionObserver' in window) {
     const o = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { pre(); o.disconnect(); } }, { rootMargin: '400px' });
     o.observe(vitrine);
