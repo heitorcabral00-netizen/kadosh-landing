@@ -617,9 +617,9 @@ if (palco && podeAnimar) {
   });
 }
 
-/* máscara leve do telefone */
+/* máscara leve do telefone (o formulário só existe na home) */
 const zap = document.getElementById('f-zap');
-zap.addEventListener('input', () => {
+if (zap) zap.addEventListener('input', () => {
   const d = zap.value.replace(/\D/g, '').slice(0, 11);
   zap.value = d.length > 6 ? `(${d.slice(0,2)}) ${d.slice(2, d.length-4)}-${d.slice(-4)}`
             : d.length > 2 ? `(${d.slice(0,2)}) ${d.slice(2)}`
@@ -630,7 +630,7 @@ zap.addEventListener('input', () => {
 const p = new URLSearchParams(location.search);
 const origem = p.get('utm_source') || p.get('origem') || document.referrer || 'acesso direto';
 
-document.getElementById('form-lead').addEventListener('submit', async e => {
+document.getElementById('form-lead')?.addEventListener('submit', async e => {
   e.preventDefault();
   const f = e.target;
   const val = n => f.elements[n].value.trim();

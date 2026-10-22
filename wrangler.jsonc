@@ -1,7 +1,7 @@
 {
   "name": "kadosh-site",
   "compatibility_date": "2026-09-01",
-  "assets": { "directory": ".", "html_handling": "auto-trailing-slash" },
+  "assets": { "directory": ".", "html_handling": "drop-trailing-slash" },
   // Domínios próprios do site (a Cloudflare cria os registros de DNS) e rotas de zona com o mesmo
   // endereço: a rota específica do www vence a rota curinga *.kadoshsistemas.com.br/* da plataforma.
   "routes": [
