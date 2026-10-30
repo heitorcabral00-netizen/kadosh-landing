@@ -1,100 +1,17 @@
 <!DOCTYPE html>
 <!--
-  Página de cases — atende em /cases, sem .html à vista.
-
-  Ela mora em cases/index.html de propósito: servidor de site estático entrega
-  index.html quando pedem a pasta, então o endereço público fica /cases. É o
-  jeito de ter URL limpa sem depender de configuração no painel do Render.
-
-  Usa o mesmo /assets/estilo.css e o mesmo /assets/site.js da home: nada de
-  estilo nem de comportamento é reescrito aqui, então as duas páginas não
-  divergem. O script é defensivo — só mexe no que existe na página.
+  As lojas saíram do site (pedido do Heitor, 30/10/2026: "nenhum dos grandes mostram as lojas").
+  O endereço /cases continua existindo só para levar quem tem o link antigo ao início.
+  A versão com os cards está no histórico do git (commit f8a6672).
 -->
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cases — Kadosh</title>
-<meta name="description" content="Operações que rodam com sistema da Kadosh: cardápio próprio, pedido impresso na cozinha e painel para acompanhar o dia.">
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-<link rel="canonical" href="https://kadoshsistemas.com.br/cases">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Kadosh">
-<meta property="og:locale" content="pt_BR">
-<meta property="og:title" content="Cases — Kadosh">
-<meta property="og:description" content="Clientes que vendem pelo canal próprio, sem comissão de aplicativo.">
-<meta property="og:url" content="https://kadoshsistemas.com.br/cases">
-<meta property="og:image" content="https://kadoshsistemas.com.br/assets/og-kadosh.jpg">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#0B0B0C">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/estilo.css">
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="0; url=/">
+<link rel="canonical" href="https://kadoshsistemas.com.br/">
+<title>Kadosh</title>
+<script>location.replace("/")</script>
 </head>
-<body>
-<script>document.documentElement.classList.add('anim')</script>
-<script>
-/* Recarregar volta para o início: sem isto o navegador devolve a rolagem anterior ou pula para o
-   #trecho do endereço. Link de outra página para uma seção (/#delivery) continua funcionando. */
-(function(){
-  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-  var n = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
-  if (n && n.type === 'reload') {
-    if (location.hash) history.replaceState(null, '', location.pathname + location.search);
-    var topo = function(){ window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); };
-    topo(); document.addEventListener('DOMContentLoaded', topo); window.addEventListener('load', topo);
-  }
-})();
-</script>
-
-
-<header>
-  <a class="logo" href="/"><span class="mark">k</span><span class="word">kadosh<i class="quad"></i></span></a>
-  <nav>
-    <a href="/">Início</a>
-    <a href="/cases">Cases</a>
-    <a href="/#delivery">Delivery</a>
-    <a href="/#operacao">O sistema</a>
-    <a href="/#como">Como funciona</a>
-    <a href="/#faq">Dúvidas</a>
-  </nav>
-  <div class="head-cta">
-    <a class="btn" href="/#contato">Falar com a equipe</a>
-  </div>
-</header>
-
-<main>
-<section class="wrap" id="cases" style="padding-top:96px;padding-bottom:110px">
-  <div class="sec-head">
-    <div class="eyebrow">QUEM JÁ ESTÁ RODANDO</div>
-    <h2>Quem já vende com a Kadosh</h2>
-  </div>
-
-  <!-- os cards saem do array CASES, no /assets/site.js, e são trocados pelos
-       cadastrados no painel quando ele responde. Aqui entram todos os
-       publicados; a home mostra a quantidade escolhida no painel. -->
-  <div class="cases-grid" id="lista-cases"></div>
-
-  <div style="margin-top:56px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
-    <a class="btn btn-dark" href="/#contato">Falar com a equipe</a>
-    <a href="/" style="font-size:14px;font-weight:600;color:var(--accent)">Voltar para o início</a>
-  </div>
-</section>
-</main>
-
-<footer>
-  <div style="display:flex;flex-direction:column;gap:12px">
-    <div class="logo"><span class="mark">k</span><span class="word" style="font-size:16px">kadosh<i class="quad"></i></span></div>
-    <div style="color:#6E6E68">CNPJ 60.308.078/0001-08</div>
-    <a href="/privacidade">Política de privacidade</a>
-  </div>
-  <div class="fcols">
-    <div class="fcol"><b>Soluções</b><a href="/#delivery">Delivery</a><a href="/#operacao">O sistema</a><a href="/#calculadora">Calculadora</a></div>
-    <div class="fcol"><b>Empresa</b><a href="/cases">Cases</a><a href="/#como">Como funciona</a><a href="/#faq">Dúvidas</a></div>
-    <div class="fcol"><b>Contato</b><a data-link="wa" href="#">WhatsApp</a></div>
-  </div>
-</footer>
-
-<script src="/assets/site.js"></script>
-</body>
+<body style="background:#0B0B0C"></body>
 </html>

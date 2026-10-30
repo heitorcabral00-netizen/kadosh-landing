@@ -37,6 +37,7 @@
   .ph{background:var(--hatch);display:flex;align-items:flex-end;padding:14px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#9C9C93}
   .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
   .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .grid-3.grid-dupla{grid-template-columns:repeat(2,1fr)}
 
   /* header */
   html{scroll-behavior:smooth}
@@ -211,8 +212,6 @@
   .numeros-par>div+div{border-left:1px solid var(--line-dark);padding-left:56px}
   .numeros-par b{font-size:64px;line-height:1;font-weight:800;letter-spacing:-.04em;color:var(--accent)}
   .numeros-par span{font-size:16px;line-height:1.6;color:#D9D9D3;max-width:380px}
-  .numeros-link{display:inline-block;margin-top:34px;font-size:14px;font-weight:700;color:#fff;border-bottom:1px solid var(--accent)}
-  .numeros-link:hover{color:var(--accent)}
 
   /* quote */
 
