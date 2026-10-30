@@ -167,13 +167,18 @@
   </div>
 </section>
 
-<section class="wrap casos-home" id="cases" style="padding-top:80px;padding-bottom:40px">
-  <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:26px">
-    <h2>Quem já vende com a Kadosh</h2>
-    <a href="/cases" style="font-size:14px;font-weight:600;color:var(--accent)">Ver todos</a>
+<!-- No lugar dos cards de case, o volume do sistema (pedidos registrados nas lojas da plataforma e na
+     Pizza's Imperial, sem cancelados nem pedidos de teste; conta de 30/10/2026). Sem <h2> aqui de propósito:
+     o painel escreve o título dos cases em "#cases h2". Os cases continuam em /cases. -->
+<section class="wrap" id="cases" style="padding-top:80px;padding-bottom:40px">
+  <div class="numeros reveal">
+    <p class="numeros-tit">Quem já vende com a Kadosh</p>
+    <div class="numeros-par">
+      <div><b>R$ 2 milhões</b><span>Mais de R$ 2 milhões em pedidos registrados no sistema da Kadosh</span></div>
+      <div><b>20 mil</b><span>Mais de 20 mil pedidos registrados nas lojas que usam a Kadosh</span></div>
+    </div>
+    <a class="numeros-link" href="/cases">Ver as lojas</a>
   </div>
-  <!-- os cards saem do array CASES, lá no <script> do fim do arquivo -->
-  <div class="cases-grid" id="lista-cases"></div>
 </section>
 
 <section class="wrap" id="delivery" style="padding-top:70px;padding-bottom:96px">
