@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kadosh | IA no WhatsApp e entregas roteirizadas</title>
+<meta name="description" content="A IA da Kadosh atende o seu delivery no WhatsApp, entende até áudio e lança o pedido no sistema. A comanda sai na cozinha e a entrega vira rota no celular do motoboy. Sem comissão por pedido.">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kadosh">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Seu WhatsApp vira pedido. E o pedido vira rota.">
+<meta property="og:description" content="IA que atende o WhatsApp do seu delivery, entende áudio e lança o pedido. Entregas roteirizadas no celular do motoboy.">
+<meta property="og:url" content="https://kadoshsistemas.com.br/ia">
+<meta property="og:image" content="https://kadoshsistemas.com.br/assets/og-kadosh.jpg">
+<meta name="theme-color" content="#0B0B0C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add("js")</script>
+<script>
+if (/(^|\.)kadoshsistemas\.com\.br$/.test(location.hostname)) {
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");
+  fbq("init", "1077014242042435");
+  fbq("track", "PageView");
+}
+</script>
+<style>
+  :root{
+    --fundo:#0B0B0C;
+    --fundo-2:#0F0F11;
+    --vidro:rgba(255,255,255,.04);
+    --vidro-forte:rgba(255,255,255,.07);
+    --borda:rgba(255,255,255,.09);
+    --borda-forte:rgba(255,255,255,.16);
+    --texto:#F4F4F1;
+    --suave:#B4B4B0;
+    --apagado:#77776F;
+    --dourado:#C9A227;
+    --dourado-claro:#E8C860;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{margin:0;background:var(--fundo);color:var(--texto);font-family:Manrope,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  img,video{display:block;max-width:100%;height:auto}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3{margin:0;letter-spacing:-.04em;text-wrap:balance}
+  p{margin:0;text-wrap:pretty}
+  .caixa{max-width:1200px;margin:0 auto;padding-inline:20px}
+  .ouro{color:var(--dourado)}
+  .quad{display:inline-block;width:.14em;height:.14em;background:var(--dourado);margin-left:.05em}
+
+  .botao{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-weight:800;font-size:16px;padding:18px 28px;border-radius:14px;background:var(--dourado);color:#0B0B0C;box-shadow:0 10px 30px rgba(201,162,39,.25);transition:transform .2s,box-shadow .2s,background .2s}
+  .botao:hover{transform:translateY(-2px);background:var(--dourado-claro);box-shadow:0 16px 40px rgba(201,162,39,.35)}
+  .botao svg{width:20px;height:20px;flex:none}
+  .botao-vidro{background:var(--vidro);color:var(--texto);border:1px solid var(--borda-forte);box-shadow:none;font-weight:700}
+  .botao-vidro:hover{background:var(--vidro-forte);box-shadow:none}
+
+  .logo{display:flex;align-items:center;gap:9px}
+  .logo .marca{width:28px;height:28px;border-radius:9px;background:#fff;color:#0B0B0C;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px}
+  .logo .nome{font-weight:800;font-size:20px;letter-spacing:-.035em}
+  .logo .nome i{display:inline-block;width:.2em;height:.2em;background:var(--dourado);margin-left:.06em}
+
+  header{position:sticky;top:0;z-index:40;background:rgba(11,11,12,.72);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.06)}
+  header .caixa{display:flex;align-items:center;justify-content:space-between;height:64px}
+  header .botao{font-size:14px;padding:10px 16px;border-radius:11px;box-shadow:none}
+
+  .topo{position:relative;padding:40px 0 56px;overflow:hidden}
+  .topo::before{content:"";position:absolute;inset:-20% -30% auto auto;width:900px;height:900px;background:radial-gradient(closest-side,rgba(201,162,39,.16),transparent 70%);pointer-events:none}
+  .topo::after{content:"";position:absolute;left:-200px;bottom:-300px;width:700px;height:700px;background:radial-gradient(closest-side,rgba(201,162,39,.07),transparent 70%);pointer-events:none}
+  .topo .caixa{position:relative;display:grid;gap:40px}
+  .topo h1{font-size:44px;line-height:1.02;font-weight:800}
+  .topo .sub{margin-top:20px;font-size:17px;line-height:1.65;color:var(--suave);max-width:560px}
+  .oferta{margin-top:28px;position:relative;display:flex;flex-direction:column;gap:6px;padding:18px 20px;border-radius:18px;background:linear-gradient(135deg,rgba(201,162,39,.14),rgba(201,162,39,.03));border:1px solid rgba(201,162,39,.35);max-width:470px}
+  .oferta b{font-size:34px;font-weight:800;letter-spacing:-.04em;line-height:1;white-space:nowrap}
+  .oferta b small{font-size:15px;font-weight:600;color:var(--suave);letter-spacing:0}
+  .oferta span{font-size:14.5px;line-height:1.5;color:var(--suave)}
+  .oferta span strong{color:var(--texto)}
+  .acoes{margin-top:22px;display:flex;flex-direction:column;gap:12px}
+  .acoes .botao{width:100%}
+  .nota{margin-top:16px;font-size:14px;color:var(--apagado)}
+
+  section{position:relative;padding:72px 0}
+  .linha-ouro{height:1px;background:linear-gradient(90deg,transparent,rgba(201,162,39,.45),transparent);border:0;margin:0}
+  .cabeca{max-width:760px}
+  .cabeca h2{font-size:34px;line-height:1.06;font-weight:800}
+  .cabeca p{margin-top:16px;font-size:17px;line-height:1.7;color:var(--suave)}
+
+  .moldura-video{position:relative;border-radius:26px;overflow:hidden;border:1px solid var(--borda-forte);box-shadow:0 40px 100px rgba(0,0,0,.6),0 0 0 8px rgba(255,255,255,.02);aspect-ratio:4/5;background:#EEEBE4;max-width:460px;margin:0 auto;width:100%}
+  .moldura-video video{width:100%;height:100%;object-fit:cover}
+  .som{position:absolute;right:14px;bottom:14px;display:flex;align-items:center;gap:8px;font:700 13px Manrope,sans-serif;color:#fff;background:rgba(11,11,12,.78);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:9px 14px;cursor:pointer}
+  .som svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .pontos{margin-top:26px;display:grid;gap:12px}
+  .pontos div{display:flex;gap:12px;align-items:flex-start;font-size:16px;line-height:1.6;color:var(--suave)}
+  .pontos div strong{color:var(--texto)}
+  .pontos svg{width:22px;height:22px;flex:none;margin-top:1px;fill:none;stroke:var(--dourado);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+
+  .tres{margin-top:40px;display:grid;gap:26px}
+  .tres div{border-top:1px solid var(--borda-forte);padding-top:20px}
+  .tres b{display:block;font-size:44px;font-weight:800;letter-spacing:-.05em;line-height:1;background:linear-gradient(180deg,var(--dourado-claro),var(--dourado));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .tres h3{margin-top:14px;font-size:20px;font-weight:800}
+  .tres p{margin-top:8px;font-size:15.5px;line-height:1.65;color:var(--suave)}
+
+  .tela-grande{margin-top:44px;border-radius:20px;overflow:hidden;border:1px solid var(--borda-forte);background:#fff;box-shadow:0 50px 120px rgba(0,0,0,.65),0 0 80px rgba(201,162,39,.08);transform-origin:center top;will-change:transform}
+  .js [data-inclina]{transform:perspective(1800px) rotateX(calc((1 - var(--p,1)) * 14deg)) scale(calc(.92 + var(--p,1) * .08))}
+  .barra-janela{display:flex;align-items:center;gap:6px;padding:10px 14px;background:#F3F3EF;border-bottom:1px solid #E4E4DE}
+  .barra-janela span{width:10px;height:10px;border-radius:50%;background:#D6D6CF}
+  .barra-janela em{font-style:normal;font-size:12px;color:#8A8A83;margin-left:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .legenda{margin-top:18px;font-size:14px;line-height:1.6;color:var(--apagado);text-align:center}
+
+  .rotas{display:grid;gap:40px;align-items:center}
+  .rotas .visual{position:relative}
+  .rotas .visual .tela-grande{margin-top:0}
+  .rotas .visual .tela-grande img{width:100%;max-height:620px;object-fit:cover;object-position:top}
+  .motoboy{display:none}
+
+  .pilulas{margin-top:30px;display:flex;flex-wrap:wrap;gap:10px}
+  .pilulas span{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;padding:10px 15px;border-radius:999px;background:var(--vidro);border:1px solid var(--borda)}
+  .pilulas span::before{content:"";width:7px;height:7px;background:var(--dourado);border-radius:2px}
+  .vitrine{margin-top:44px;overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+  .faixa-telas{display:flex;gap:18px;width:max-content;animation:rolar 60s linear infinite}
+  .vitrine:hover .faixa-telas{animation-play-state:paused}
+  .faixa-telas figure{margin:0;width:250px;flex:none}
+  .faixa-telas .quadro{border-radius:16px;overflow:hidden;border:1px solid var(--borda-forte);background:#fff;height:440px}
+  .faixa-telas img{width:100%;height:100%;object-fit:cover;object-position:top}
+  .faixa-telas figcaption{margin-top:12px;font-size:14px;font-weight:700;color:var(--suave)}
+  @keyframes rolar{to{transform:translateX(-50%)}}
+
+  .numeros{display:grid;gap:16px}
+  .numeros div{border-radius:22px;padding:30px 24px;background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,.015));border:1px solid var(--borda)}
+  .numeros b{display:block;font-size:52px;font-weight:800;letter-spacing:-.05em;line-height:1;background:linear-gradient(180deg,#fff 20%,var(--dourado-claro));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .numeros span{display:block;margin-top:12px;font-size:15.5px;line-height:1.6;color:var(--suave)}
+
+  .implantacao{margin-top:40px;display:grid;gap:14px}
+  .implantacao div{position:relative;border-radius:20px;padding:24px 22px 24px 74px;background:var(--vidro);border:1px solid var(--borda)}
+  .implantacao b{position:absolute;left:22px;top:24px;width:36px;height:36px;border-radius:12px;background:var(--dourado);color:#0B0B0C;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .implantacao h3{font-size:18px;font-weight:800}
+  .implantacao p{margin-top:6px;font-size:15px;line-height:1.65;color:var(--suave)}
+
+  .duvidas{max-width:820px;margin:0 auto}
+  details{border-bottom:1px solid var(--borda);padding:22px 0}
+  details summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:17px;font-weight:700}
+  details summary::-webkit-details-marker{display:none}
+  details summary i{width:30px;height:30px;border-radius:50%;border:1px solid var(--borda-forte);flex:none;position:relative}
+  details summary i::before,details summary i::after{content:"";position:absolute;left:50%;top:50%;width:11px;height:1.6px;background:var(--dourado);transform:translate(-50%,-50%)}
+  details summary i::after{transform:translate(-50%,-50%) rotate(90deg);transition:transform .2s}
+  details[open] summary i::after{transform:translate(-50%,-50%) rotate(0)}
+  details p{margin-top:12px;font-size:15.5px;line-height:1.7;color:var(--suave)}
+
+  .final{text-align:center;overflow:hidden}
+  .final::before{content:"";position:absolute;left:50%;top:50%;width:900px;height:600px;transform:translate(-50%,-50%);background:radial-gradient(closest-side,rgba(201,162,39,.18),transparent 70%);pointer-events:none}
+  .final .caixa{position:relative}
+  .final h2{font-size:38px;line-height:1.05;font-weight:800;max-width:760px;margin:0 auto}
+  .final p{margin:18px auto 0;font-size:17px;line-height:1.7;color:var(--suave);max-width:560px}
+  .final .botao{margin-top:30px;width:100%;max-width:380px}
+
+  footer{border-top:1px solid rgba(255,255,255,.06);padding:28px 0 112px;color:var(--apagado);font-size:13px}
+  footer .caixa{display:flex;flex-wrap:wrap;gap:14px 26px;align-items:center;justify-content:space-between}
+  footer a:hover{color:#fff}
+
+  .barra-fixa{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(11,11,12,.9);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--borda);padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:12px;transform:translateY(110%);transition:transform .25s}
+  .barra-fixa.visivel{transform:none}
+  .barra-fixa .preco{flex:1;min-width:0;font-size:13px;line-height:1.35}
+  .barra-fixa .preco b{display:block;font-size:17px;font-weight:800}
+  .barra-fixa .preco small{color:var(--suave);font-size:12px}
+  .barra-fixa .botao{padding:13px 18px;font-size:15px;box-shadow:none}
+
+  .js .surge{opacity:0;transform:translateY(26px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
+  .js .surge.on{opacity:1;transform:none}
+
+  @media (min-width:960px){
+    .caixa{padding-inline:40px}
+    header .caixa{height:72px}
+    .topo{padding:70px 0 90px}
+    .topo .caixa{grid-template-columns:1.05fr .95fr;align-items:center;gap:40px}
+    .topo h1{font-size:72px}
+    .topo .sub{font-size:19px}
+    .oferta{flex-direction:row;align-items:center;gap:18px}
+    .acoes{flex-direction:row}
+    .acoes .botao{width:auto}
+    section{padding:120px 0}
+    .cabeca h2{font-size:54px}
+    .tres{grid-template-columns:repeat(3,1fr);gap:40px}
+    .rotas{grid-template-columns:.8fr 1.2fr;gap:70px}
+    .motoboy{display:block;position:absolute;right:-24px;bottom:-50px;width:196px;border-radius:32px;background:#18181B;padding:7px;box-shadow:0 30px 70px rgba(0,0,0,.6),inset 0 0 0 1px #2C2C31}
+    .motoboy img{border-radius:26px}
+    .rotas .visual .tela-grande img{max-height:none}
+    .faixa-telas figure{width:560px}
+    .faixa-telas .quadro{height:350px}
+    .numeros{grid-template-columns:1fr 1fr;gap:24px}
+    .numeros div{padding:44px 40px}
+    .numeros b{font-size:64px;white-space:nowrap}
+    .implantacao{grid-template-columns:repeat(3,1fr);gap:20px}
+    .implantacao div{padding:30px 28px;padding-top:86px}
+    .implantacao b{left:28px;top:30px}
+    .final h2{font-size:60px}
+    footer{padding-bottom:28px}
+    .barra-fixa{display:none}
+  }
+  @media (max-width:370px){
+    .topo h1{font-size:38px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .faixa-telas{animation:none}
+    .vitrine{overflow-x:auto}
+    .js [data-inclina]{transform:none}
+    .js .surge{opacity:1;transform:none;transition:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="caixa">
+    <a class="logo" href="/" aria-label="Kadosh"><span class="marca">k</span><span class="nome">kadosh<i></i></span></a>
+    <a class="botao" data-zap href="#">Falar no WhatsApp</a>
+  </div>
+</header>
+
+<main>
+<section class="topo">
+  <div class="caixa">
+    <div>
+      <h1>Seu WhatsApp vira pedido. <span class="ouro">E o pedido vira rota<i class="quad"></i></span></h1>
+      <p class="sub">A IA da Kadosh atende o cliente no WhatsApp do seu delivery, entende até áudio, confere o pedido e lança no sistema. A comanda sai na cozinha e a entrega vira rota no celular do motoboy.</p>
+      <div class="oferta">
+        <b>R$ 99,90<small>/mês</small></b>
+        <span><strong>Nos 3 primeiros meses</strong>, com a IA no WhatsApp e a roteirização incluídas.</span>
+      </div>
+      <div class="acoes" id="acoes-topo">
+        <a class="botao" data-zap href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.5 1 2.7.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>Quero ver funcionando</a>
+        <a class="botao botao-vidro" href="#video" id="assistir">Assistir o vídeo</a>
+      </div>
+      <p class="nota">Sem comissão por pedido. A venda entra inteira no seu caixa.</p>
+    </div>
+
+    <div class="moldura-video" id="video">
+      <video id="filme" autoplay muted loop playsinline preload="auto" poster="../assets/ia/audio-vira-pedido.webp" aria-label="Vídeo: o cliente manda um áudio no WhatsApp e a IA da Kadosh lança o pedido no sistema">
+        <source src="../assets/ia/audio-vira-pedido.mp4" type="video/mp4">
+      </video>
+      <button class="som" id="som" type="button"><svg viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path id="som-onda" d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg><span>Ativar som</span></button>
+    </div>
+  </div>
+</section>
+
+<hr class="linha-ouro">
+
+<section id="como-atende">
+  <div class="caixa">
+    <div class="cabeca surge">
+      <h2>O cliente manda áudio. <span class="ouro">A IA faz o resto.</span></h2>
+      <p>Ela atende no WhatsApp da sua loja do primeiro oi até o pedido lançado. Você acompanha tudo pelo painel.</p>
+    </div>
+    <div class="tres">
+      <div class="surge"><b>1</b><h3>O cliente pede do jeito dele</h3><p>Digitando ou mandando áudio. A IA entende os itens, o endereço e a forma de pagamento.</p></div>
+      <div class="surge"><b>2</b><h3>A IA confere com ele</h3><p>Monta o resumo com itens, preços, taxa de entrega e total, e pergunta se pode lançar.</p></div>
+      <div class="surge"><b>3</b><h3>O pedido entra no sistema</h3><p>Com o sim do cliente, o pedido cai no painel e sai impresso na cozinha. Ninguém digita nada de novo.</p></div>
+    </div>
+    <div class="tela-grande" data-inclina>
+      <div class="barra-janela"><span></span><span></span><span></span><em>sualoja.kadoshsistemas.com.br/whatsapp</em></div>
+      <picture>
+        <source media="(max-width:640px)" srcset="../assets/ia/atendimento-whatsapp-cel.webp" width="720" height="1363">
+        <img src="../assets/ia/atendimento-whatsapp.webp" alt="Tela de atendimento do WhatsApp no painel da Kadosh, com as conversas da loja e a IA ligada" loading="lazy" width="1600" height="843">
+      </picture>
+    </div>
+    <p class="legenda">Todas as conversas no painel, com a IA ligada ou desligada em cada uma. Tela real do sistema, numa loja de demonstração.</p>
+  </div>
+</section>
+
+<hr class="linha-ouro">
+
+<section>
+  <div class="caixa rotas">
+    <div class="surge">
+      <div class="cabeca">
+        <h2>Do pedido pronto <span class="ouro">ao motoboy na rua</span></h2>
+        <p>Os pedidos prontos viram rotas e o motoboy sai com a ordem certa das paradas.</p>
+      </div>
+      <div class="pontos">
+        <div><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>As rotas aparecem no mapa, com a ordem e o tempo previsto de cada parada.</span></div>
+        <div><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>O motoboy recebe a rota no celular e abre o caminho no Google Maps.</span></div>
+        <div><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Ele lê o QR da comanda e o cliente é avisado quando o pedido sai.</span></div>
+        <div><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>A rota fecha sozinha quando o último pedido é entregue.</span></div>
+      </div>
+    </div>
+    <div class="visual">
+      <div class="tela-grande" data-inclina>
+        <div class="barra-janela"><span></span><span></span><span></span><em>sualoja.kadoshsistemas.com.br/entregas</em></div>
+        <picture>
+          <source media="(max-width:640px)" srcset="../assets/painel-rotas-cel.jpg" width="645" height="1398">
+          <img src="../assets/painel-rotas.jpg" alt="Painel de entregas da Kadosh com as rotas prontas no mapa e a ordem das paradas" loading="lazy" width="1600" height="1000">
+        </picture>
+      </div>
+      <div class="motoboy"><img src="../assets/ia/app-motoboy.webp" alt="App do motoboy com a rota do dia e o botão para abrir no Google Maps" loading="lazy" width="640" height="1385"></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:40px">
+  <div class="caixa">
+    <div class="cabeca surge">
+      <h2>E todo o resto <span class="ouro">no mesmo painel</span></h2>
+      <p>Tudo ligado ao mesmo pedido, do cardápio ao resultado do mês.</p>
+    </div>
+    <div class="pilulas surge">
+      <span>Cardápio com a sua marca</span>
+      <span>Sem comissão por pedido</span>
+      <span>Impressão na cozinha</span>
+      <span>iFood no mesmo painel</span>
+      <span>Precificação e CMV</span>
+      <span>Clientes que sumiram</span>
+    </div>
+  </div>
+  <div class="vitrine surge" aria-label="Telas do painel da Kadosh">
+    <div class="faixa-telas" id="faixa-telas">
+      <figure><div class="quadro"><picture><source media="(max-width:700px)" srcset="../assets/painel-visao-geral-cel.jpg"><img src="../assets/painel-visao-geral.jpg" alt="Visão geral do dia" loading="lazy"></picture></div><figcaption>Visão geral do dia</figcaption></figure>
+      <figure><div class="quadro"><picture><source media="(max-width:700px)" srcset="../assets/painel-cardapio-cel.jpg"><img src="../assets/painel-cardapio.jpg" alt="Cardápio" loading="lazy"></picture></div><figcaption>Cardápio com o CMV de cada item</figcaption></figure>
+      <figure><div class="quadro"><picture><source media="(max-width:700px)" srcset="../assets/painel-cmv-cel.jpg"><img src="../assets/painel-cmv.jpg" alt="Custos e CMV" loading="lazy"></picture></div><figcaption>Custos e CMV</figcaption></figure>
+      <figure><div class="quadro"><picture><source media="(max-width:700px)" srcset="../assets/painel-clientes-cel.jpg"><img src="../assets/painel-clientes.jpg" alt="Clientes" loading="lazy"></picture></div><figcaption>Quem comprou e quem sumiu</figcaption></figure>
+      <figure><div class="quadro"><picture><source media="(max-width:700px)" srcset="../assets/painel-ranking-cel.jpg"><img src="../assets/painel-ranking.jpg" alt="Ranking de produtos" loading="lazy"></picture></div><figcaption>O que mais vende</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:40px">
+  <div class="caixa">
+    <div class="numeros">
+      <div class="surge"><b>R$ 2 milhões</b><span>Mais de R$ 2 milhões em pedidos registrados no sistema da Kadosh</span></div>
+      <div class="surge"><b>20 mil</b><span>Mais de 20 mil pedidos registrados nas lojas que usam a Kadosh</span></div>
+    </div>
+  </div>
+</section>
+
+<hr class="linha-ouro">
+
+<section>
+  <div class="caixa">
+    <div class="cabeca surge">
+      <h2>Você não configura nada. <span class="ouro">A gente monta.</span></h2>
+      <p>A implantação é feita a distância, para lojas de todo o Brasil. Sua loja sai pronta para vender, com a equipe treinada.</p>
+    </div>
+    <div class="implantacao">
+      <div class="surge"><b>1</b><h3>Conversa sobre a sua operação</h3><p>Você mostra como funciona hoje: cardápio, entregas, impressora e iFood. A proposta sai por escrito, com o valor fechado.</p></div>
+      <div class="surge"><b>2</b><h3>A gente monta tudo</h3><p>Cadastramos o cardápio, ligamos a impressão, o iFood e o WhatsApp com a IA. Você só confere.</p></div>
+      <div class="surge"><b>3</b><h3>Equipe treinada, loja no ar</h3><p>Treinamos quem atende, a cozinha e os entregadores. O suporte pelo WhatsApp continua incluído.</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:20px">
+  <div class="caixa duvidas surge">
+    <div class="cabeca" style="margin-bottom:12px"><h2>Dúvidas</h2></div>
+    <details>
+      <summary>Como funciona a oferta dos 3 meses?<i></i></summary>
+      <p>Vale para lojas de todo o Brasil. Nos 3 primeiros meses a mensalidade é de R$ 99,90, com a IA no WhatsApp e a roteirização incluídas. A partir do 4º mês, fica em até R$ 300 por mês, conforme os módulos que a sua loja usa. O valor fechado vai por escrito na proposta, antes de começar.</p>
+    </details>
+    <details>
+      <summary>Vocês cobram comissão por pedido?<i></i></summary>
+      <p>Não. Você paga a mensalidade combinada e nada por pedido. O que o seu cliente paga entra inteiro no seu caixa.</p>
+    </details>
+    <details>
+      <summary>Preciso sair do iFood?<i></i></summary>
+      <p>Não. Os pedidos do iFood caem no mesmo painel e saem na mesma impressora dos pedidos do seu canal próprio. Você continua no iFood e leva o cliente que já te conhece a pedir direto.</p>
+    </details>
+    <details>
+      <summary>A IA atende sozinha?<i></i></summary>
+      <p>Atende. Ela conversa com o cliente no WhatsApp, entende até áudio, confere o pedido e lança direto no sistema. As conversas ficam no painel, e você desliga a IA quando quiser.</p>
+    </details>
+    <details>
+      <summary>O cardápio fica com a minha marca?<i></i></summary>
+      <p>Fica. Sua logo, suas cores e o seu endereço. Quem constrói a marca é você.</p>
+    </details>
+  </div>
+</section>
+
+<section class="final">
+  <div class="caixa surge">
+    <h2>Veja a IA atendendo <span class="ouro">antes de decidir</span></h2>
+    <p>Chama no WhatsApp que a gente te mostra a IA atendendo e a rota saindo, numa loja de demonstração.</p>
+    <a class="botao" data-zap href="#">Quero ver funcionando</a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="caixa">
+    <a class="logo" href="/" aria-label="Kadosh"><span class="marca">k</span><span class="nome" style="font-size:16px">kadosh<i></i></span></a>
+    <span>CNPJ 60.308.078/0001-08</span>
+    <a href="/privacidade">Política de privacidade</a>
+  </div>
+</footer>
+
+<div class="barra-fixa" id="barra-fixa">
+  <div class="preco"><b>R$ 99,90/mês</b><small>nos 3 primeiros meses</small></div>
+  <a class="botao" data-zap href="#">Quero ver funcionando</a>
+</div>
+
+<script>
+(() => {
+  const WHATSAPP = "5564993404936";
+  const MENSAGEM = "Oi! Vim pela página da Kadosh e quero ver a IA e a roteirização funcionando.";
+  const link = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(MENSAGEM);
+  document.querySelectorAll("[data-zap]").forEach(a => {
+    a.href = link; a.target = "_blank"; a.rel = "noopener";
+    a.addEventListener("click", () => { if (window.fbq) fbq("track", "Contact"); });
+  });
+
+  const calmo = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const temIO = "IntersectionObserver" in window;
+
+  const surgem = [...document.querySelectorAll(".surge")];
+  const revelarVisiveis = () => surgem.forEach(el => { if (!el.classList.contains("on") && el.getBoundingClientRect().top < innerHeight) el.classList.add("on"); });
+  if (!temIO || calmo) surgem.forEach(el => el.classList.add("on"));
+  else {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("on"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -8% 0px" });
+    surgem.forEach(el => io.observe(el));
+    setTimeout(revelarVisiveis, 300);
+    let espera;
+    addEventListener("scroll", () => { clearTimeout(espera); espera = setTimeout(revelarVisiveis, 150); }, { passive: true });
+    addEventListener("resize", revelarVisiveis);
+  }
+
+  const inclinados = [...document.querySelectorAll("[data-inclina]")];
+  let pedido = false;
+  const inclinar = () => {
+    pedido = false;
+    const vh = innerHeight;
+    inclinados.forEach(el => {
+      const r = el.getBoundingClientRect();
+      const p = Math.max(0, Math.min(1, 1 - (r.top - vh * 0.12) / (vh * 0.7)));
+      el.style.setProperty("--p", p.toFixed(3));
+    });
+  };
+  if (!calmo && inclinados.length) {
+    addEventListener("scroll", () => { if (!pedido) { pedido = true; requestAnimationFrame(inclinar); } }, { passive: true });
+    addEventListener("resize", inclinar);
+    inclinar();
+  }
+
+  const barra = document.getElementById("barra-fixa");
+  const acoes = document.getElementById("acoes-topo");
+  if (barra && acoes && temIO) {
+    new IntersectionObserver(([e]) => barra.classList.toggle("visivel", !e.isIntersecting && e.boundingClientRect.top < 0)).observe(acoes);
+  }
+
+  const filme = document.getElementById("filme");
+  const som = document.getElementById("som");
+  if (filme) {
+    const comSom = ligar => {
+      filme.muted = !ligar;
+      if (ligar) filme.currentTime = 0;
+      filme.play().catch(() => {});
+      som.querySelector("span").textContent = ligar ? "Tirar som" : "Ativar som";
+      document.getElementById("som-onda").style.opacity = ligar ? .35 : 1;
+    };
+    if (temIO) new IntersectionObserver(([e]) => { if (e.isIntersecting) filme.play().catch(() => {}); else filme.pause(); }, { threshold: .35 }).observe(filme);
+    else filme.play().catch(() => {});
+    som.addEventListener("click", () => comSom(filme.muted));
+    const assistir = document.getElementById("assistir");
+    if (assistir) assistir.addEventListener("click", ev => { ev.preventDefault(); filme.scrollIntoView({ behavior: calmo ? "auto" : "smooth", block: "center" }); comSom(true); });
+  }
+})();
+</script>
+</body>
+</html>
